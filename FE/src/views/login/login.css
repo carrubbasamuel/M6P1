@@ -1,0 +1,26 @@
+.login-root {
+    background-image: url('./bgimg.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .login-form {
+    background-color: white;
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .login-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+
+  .login-root input {
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    padding: 15px;
+
+  }
+  
