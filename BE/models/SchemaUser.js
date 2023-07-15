@@ -8,7 +8,6 @@ const SchemaUser = new mongoose.Schema({
   password: {
       type: String,
       required: true,
-      select: false,
   },
   name: {
     type: String,
@@ -25,7 +24,7 @@ const SchemaUser = new mongoose.Schema({
   avatar: {
     type: String,
     required: false,
-  },
+  }
 },{ timestamps: true, strict: true });
 
 module.exports = mongoose.model('User', SchemaUser, 'users');

@@ -4,14 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAuthors } from "../../../redux/reducers/AuthorSlice";
 import BlogItem from "../blog-item/BlogItem";
 
-const BlogList = () => {
+const BlogList = ({posts}) => {
   const dispatch = useDispatch();
-  const authors = useSelector((state) => state.author.data);
+  let authors = useSelector((state) => state.author.data);
 
   useEffect(() => {
     dispatch(fetchAuthors());
   }, [dispatch]);
 
+  if(posts){
+    authors = posts;
+  }
 
   return (
     <Row>

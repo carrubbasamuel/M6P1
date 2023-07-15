@@ -8,7 +8,7 @@ const Home = props => {
   const user = useSelector(state => state.login.userLogged);
   return (
     <Container fluid="sm">
-      <h1 className="blog-main-title mb-3">Benvenuto sullo Strive Blog {user && user.find.name}!</h1>
+      <h1 className="blog-main-title mb-3">Benvenuto sullo Strive Blog {user && user.user.name}!</h1>
       <BlogList />
     </Container>
   );

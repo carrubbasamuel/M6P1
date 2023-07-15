@@ -8,7 +8,6 @@ export const fetchAuthors = createAsyncThunk(
         try {
             const response = await fetch('http://localhost:3003/posts');
             const data = await response.json();
-            console.log(data);
             const { posts } = data;
             return posts;
         } catch (error) {
@@ -21,9 +20,10 @@ export const fetchNewPost = createAsyncThunk(
     'authors/fetchNewPost',
     async (post, { getState }) => {
         const  user  = getState().login.userLogged;
-        const { find } = user;
+        console.log(user);
+        const { _id } = user.user;
         try {
-            const response = await fetch('http://localhost:3003/posted/' + find._id, {
+            const response = await fetch('http://localhost:3003/posted/' + _id, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -37,6 +37,40 @@ export const fetchNewPost = createAsyncThunk(
         }
     }
 )
+
+export const fetchMyPosts = createAsyncThunk(
+    'authors/fetchMyPosts',
+    async (id) => {
+        try {
+            const response = await fetch('http://localhost:3003/MyPosts/' + id);
+            const data = await response.json();
+            const { posts } = data;
+            return posts;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+)
+
+export const fetchLike = createAsyncThunk(
+    'authors/fetchLike',
+    async (id) => {
+        try {
+            const response = await fetch('http://localhost:3003/post/like/' + id, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+)
+
+
 
 
 

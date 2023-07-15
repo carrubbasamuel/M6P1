@@ -13,7 +13,10 @@ const Blog = props => {
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const navigate = useNavigate();
-  const posts = useSelector((state) => state.data);
+  const posts = useSelector((state) => state.author.data);
+  console.log(posts);
+
+
   useEffect(() => {
     const { id } = params;
     const blog = posts.find(post => post._id.toString() === id);

@@ -26,16 +26,17 @@ const NavBar = props => {
           <img className="blog-navbar-brand" alt="logo" src={logo} />
         </Navbar.Brand>
 
-        {user && user.statusCode===200 ?
+        {user && user.statusCode === 200 ?
           <div className="d-flex">
             <div className={`align-items-center justify-content-center ${user ? "d-flex" : "d-none"}`}>
-             
+
               <Dropdown>
                 <Dropdown.Toggle variant="light" id="dropdown-basic">
-                <img src={user.statusCode === 200 && user.find.avatar} alt="avatar" className="userimg" />
-                  
+                  <img src={user.statusCode === 200 && user.user.avatar} alt="avatar" className="userimg" />
+
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
+                  <Dropdown.Item as={Link} to="/dashboard">Dashboard</Dropdown.Item>
                   <Dropdown.Item as={Link} to="/new">New Post</Dropdown.Item>
                   <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
                 </Dropdown.Menu>

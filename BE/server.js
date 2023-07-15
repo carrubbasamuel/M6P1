@@ -21,15 +21,14 @@ db.on("error", (error) => console.error(error));// se c'è un errore
 db.once("open", () => console.log("Connessione al DB avvenuta con successo!"));// se la connessione è avvenuta con successo solo una volta
 
 
-const Author = require("./routes/routeAuthor.js");
+// import delle routes
+const Post = require("./routes/routePost.js");
 const User = require("./routes/routeUser.js");
 
 // middleware
 app.use(express.json());
-
-
 // routes
-app.use("/", Author);
+app.use("/", Post);
 app.use("/", User);
 
 
