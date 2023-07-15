@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAuthors } from "../../../redux/reducers/AuthorSlice";
+import { fetchAuthors } from "../../../redux/reducers/PostSlice";
 import BlogItem from "../blog-item/BlogItem";
 
 const BlogList = ({posts}) => {

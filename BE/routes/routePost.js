@@ -6,16 +6,11 @@ const SchemaUser = require('../models/SchemaUser');
 
 const router = express.Router();
 
-const validationToken = require('../middleware/middJWT');
-
-
-//middleware
-const { elementExistUser } = require('../middleware/midwarePostCrud');
 
 
 
 
-router.get('/posts', validationToken, async (req, res) => {
+router.get('/posts', async (req, res) => {
   try {
     const posts = await SchemaPost.find().populate('author');
 
@@ -41,8 +36,8 @@ router.get('/posts', validationToken, async (req, res) => {
 });
 
 
-
-router.post('/posted/:id', elementExistUser, async (req, res) => {
+// Post new post
+router.post('/posted/:id', async (req, res) => {
   try {
     const newPost = new SchemaPost({
       title: req.body.title,
@@ -68,8 +63,9 @@ router.post('/posted/:id', elementExistUser, async (req, res) => {
   }
 });
 
+
 // Get posts by author 
-router.get('/MyPosts/:id', elementExistUser, async (req, res) => {
+router.get('/MyPosts/:id', async (req, res) => {
   try {
     const posts = await SchemaPost.find({ author: req.params.id }).populate('author');
     if (posts.length === 0) {

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import BlogList from "../../components/blog/blog-list/BlogList";
-import { fetchMyPosts } from "../../redux/reducers/AuthorSlice";
+import { fetchMyPosts } from "../../redux/reducers/PostSlice";
 import "./style.css";
 
 

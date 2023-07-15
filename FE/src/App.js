@@ -13,7 +13,6 @@ import Register from "./views/register/register";
 function App() {
   const { userLogged } = useSelector((state) => state.login);
 
-
   return (
     <Router>
       <NavBar />

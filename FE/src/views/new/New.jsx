@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import "react-quill/dist/quill.snow.css";
 import { useDispatch } from "react-redux";
-import { fetchNewPost } from "../../redux/reducers/AuthorSlice";
+import { fetchNewPost } from "../../redux/reducers/PostSlice";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 

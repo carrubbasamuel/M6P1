@@ -3,12 +3,16 @@ const bcrypt = require('bcrypt');
 const SchemaUser = require('../models/SchemaUser');
 
 const generateToken = (user) => {
-  const jwtSecretKey = 'ortigia'; // Sostituisci con una chiave segreta sicura
-  const token = jwt.sign({ userId: user._id, email: user.email }, jwtSecretKey, {
-    expiresIn: '1h', // Scadenza del token (1 ora)
+  const jwtSecretKey = process.env.KEY_JWT; // Sostituisci con una chiave segreta sicura
+  const token = jwt.sign({
+    userId: user._id,
+    email: user.email
+  }, jwtSecretKey, {
+    expiresIn: '10s', // Scadenza del token (1 ora)
   });
   return token;
 };
+
 
 const bcrypterAuth = async (req, res, next) => {
   try {
@@ -26,16 +30,19 @@ const bcrypterAuth = async (req, res, next) => {
       return res.status(401).send({ statusCode: 401, message: 'Authentication failed' });
     }
 
-    // Genera il JWT e invialo al client come parte della risposta
-    const token = generateToken(user);
+    const token = generateToken(user);// Genera il JWT e invialo al client come parte della risposta
 
     // Includi il token nella risposta
-    res.status(200).send({
-      statusCode: 200,
-      message: 'Login successfully',
-      user,
-      token,
-    });
+    req.token = token;
+    req.user = {
+      _id: user._id,
+      email: user.email,
+      name: user.name,
+      surname: user.surname,
+      born_date: user.born_date,
+      avatar: user.avatar,
+    }
+    next();
   } catch (error) {
     res.status(500).send({ statusCode: 500, message: 'Internal server error', error });
   }

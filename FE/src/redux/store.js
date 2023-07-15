@@ -1,9 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import authorSlice from './reducers/AuthorSlice';
 import LoginSlice from './reducers/LoginSlice';
+import PostSlice from './reducers/PostSlice';
 
 const reducerSlice = combineReducers({
-    author: authorSlice,
+    author: PostSlice,
     login: LoginSlice
   });
 

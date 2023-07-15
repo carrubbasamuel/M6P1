@@ -1,8 +1,10 @@
 const jwt = require('jsonwebtoken');
-const jwtSecretKey = 'ortigia'; // Sostituisci con la stessa chiave segreta usata nella generazione del JWT
+const jwtSecretKey = process.env.KEY_JWT; // Sostituisci con la stessa chiave segreta usata nella generazione del JWT
 
 const verifyToken = (req, res, next) => {
+
   const token = req.headers.authorization?.split(' ')[1]; // Ottieni il token dall'header "Authorization"
+
   if (!token) {
     return res.status(401).send({ statusCode: 401, message: 'Unauthorized' });
   }

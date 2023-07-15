@@ -11,14 +11,16 @@ const router = express.Router();
 const bcrypterAuth = require('../middleware/midwareLogin');
 
 
+
+//login decrypting pw
 router.post('/login', bcrypterAuth, (req, res) => {
     try {
-        const { user } = req;
-        console.log(user);
-        if (user) {
+        const { token, user } = req;
+        if (token) {
             res.status(200).send({
                 statusCode: 200,
                 message: 'Login successfully',
+                token,
                 user,
             });
         } else {
@@ -38,7 +40,7 @@ router.post('/login', bcrypterAuth, (req, res) => {
 
 
 
-
+//When register crypting pw
 router.post('/register', async (req, res) => {
     bcrypt.hash(req.body.password, 10)
     .then((hash)=>{
