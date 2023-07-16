@@ -26,15 +26,13 @@ export const fetchAuthors = createAsyncThunk(
 
 
 
-
 export const fetchNewPost = createAsyncThunk(
     'authors/fetchNewPost',
     async (post, { getState }) => {
         const user = getState().login.userLogged;
-        const { _id } = user.user;
         const ApiKey = user.token;
         try {
-            const response = await axios.post('http://localhost:3003/posted/' + _id, post, {
+            const response = await axios.post('http://localhost:3003/posted', post, {
                 headers: {
                     'Content-Type': 'application/json',
                     "Authorization": "Bearer " + ApiKey,
@@ -51,12 +49,12 @@ export const fetchNewPost = createAsyncThunk(
 
 export const fetchMyPosts = createAsyncThunk(
     'authors/fetchMyPosts',
-    async (id, { getState }) => {
+    async (_, { getState }) => {
         const user = getState().login.userLogged;
         const { token } = user;
 
         try {
-            const response = await axios.get('http://localhost:3003/MyPosts/' + id, {
+            const response = await axios.get('http://localhost:3003/MyPosts', {
                 headers: {
                     'Content-Type': 'application/json',
                     "Authorization": "Bearer " + token,

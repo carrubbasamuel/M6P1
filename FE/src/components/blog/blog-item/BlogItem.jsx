@@ -3,11 +3,15 @@ import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import BlogAuthor from "../blog-author/BlogAuthor";
 import "./styles.css";
+
+
 const BlogItem = (props) => {
   const { title, cover, author, _id } = props;
+
+
   return (
     
-      <Card className="blog-card">
+      <Card className="blog-card shadow">
         <Card.Img   variant="top" src={cover} className="blog-cover" />
         <Card.Body as={Link} to={`/blog/${_id}`}>
           <Card.Title>{title}</Card.Title>

@@ -39,7 +39,7 @@ router.get('/posts', async (req, res) => {
 
 
 // Post new post
-router.post('/posted/:id', async (req, res) => {
+router.post('/posted', async (req, res) => {
   try {
     const newPost = new SchemaPost({
       title: req.body.title,
@@ -68,9 +68,9 @@ router.post('/posted/:id', async (req, res) => {
 
 
 // Get posts by author 
-router.get('/MyPosts/:id', async (req, res) => {
+router.get('/MyPosts', async (req, res) => {
   try {
-    const posts = await SchemaPost.find({ author: req.params.id }).populate({
+    const posts = await SchemaPost.find({ author: req.userId }).populate({
       path: 'author',
       select: 'name surname avatar',
     });

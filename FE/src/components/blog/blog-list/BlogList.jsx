@@ -15,6 +15,8 @@ const BlogList = ({posts}) => {
     dispatch(fetchAuthors());
   }, [dispatch]);
 
+
+
   if(posts){
     authors = posts;
   }else if(location.pathname === "/dashboard"){

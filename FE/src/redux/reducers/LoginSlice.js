@@ -1,6 +1,8 @@
 
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+
 
 
 //Login
@@ -48,9 +50,58 @@ export const fetchRegister = createAsyncThunk(
     }
 )
 
+export const fetchDelete = createAsyncThunk(
+    'login/fetchDelete',
+    async (_, { getState, dispatch }) => {
+        try {
+            const response = await axios.delete('http://localhost:3003/delete', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": "Bearer " + getState().login.userLogged.token,
+                }
+            });
+            const { data } = response;
+            dispatch(logout());
+            console.log(data);
+            return data;
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+)
+
+
+//Validation Delete
+export const fetchValidationDelete = createAsyncThunk(
+    'login/fetchValidationDelete',
+    async( value, { getState, dispatch }) => {
+        try {
+            const response = await axios.post('http://localhost:3003/validationDelete', value, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": "Bearer " + getState().login.userLogged.token,
+                }
+            });
+            const { data } = response;
+            console.log(data);
+            dispatch(setValidationDelate(true));
+            return data;
+        }
+        catch (error) {
+            dispatch(setValidationDelate(false));
+            console.log(error);
+        }
+    }
+)
+
+
+
+
 
 const initialState = {
     userLogged: JSON.parse(localStorage.getItem('user')) || null,
+    isDeleteble: false,
     loading: false,
     error: null
 }
@@ -63,6 +114,9 @@ const loginSlice = createSlice({
         logout: (state, action) => {
             localStorage.removeItem('user');
             state.userLogged = null;
+        },
+        setValidationDelate: (state, action) => {
+            state.isDeleteble = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -83,5 +137,5 @@ const loginSlice = createSlice({
 })
 
 
-export const { logout } = loginSlice.actions;
+export const { logout, setValidationDelate } = loginSlice.actions;
 export default loginSlice.reducer;

@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import logo from '../../assets/logo.png';
 import { fetchLogin } from '../../redux/reducers/LoginSlice';
 import './login.css';
 
@@ -11,6 +12,10 @@ export default function Login() {
 
   const mail = useRef(null);
   const password = useRef(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,7 +43,7 @@ export default function Login() {
         <Row className="justify-content-center align-items-center vh-100">
           <Col md={6}>
             <div className="login-form">
-              <h1 className="login-title">Login</h1>
+              <img className='mb-5' width={150} src={logo} alt="" />
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label>Email</Form.Label>
@@ -48,10 +53,10 @@ export default function Login() {
                   <Form.Label>Password</Form.Label>
                   <Form.Control ref={password} type="password" placeholder="Enter password" />
                 </Form.Group>
-                <Button className='m-4' variant="outline-secondary" type="submit">
+                <Button className='m-4' variant="outline-success" type="submit">
                   Login
                 </Button>
-                <Link to="/register">Non hai un account? Registrati!</Link>
+                <Link className='text-muted' to="/register">SingUp</Link>
               </Form>
             </div>
           </Col>

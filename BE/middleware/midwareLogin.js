@@ -24,7 +24,7 @@ const bcrypterAuth = async (req, res, next) => {
       return res.status(401).send({ statusCode: 401, message: 'Authentication failed' });
     }
 
-    const validPassword = await bcrypt.compare(password, user.password);
+    const validPassword = await bcrypt.compare(password, user.password);// Confronta la password inviata con quella salvata nel DB e la decripta per confrontarla
 
     if (!validPassword) {
       return res.status(401).send({ statusCode: 401, message: 'Authentication failed' });
@@ -35,11 +35,9 @@ const bcrypterAuth = async (req, res, next) => {
     // Includi il token nella risposta
     req.token = token;
     req.user = {
-      _id: user._id,
       email: user.email,
       name: user.name,
       surname: user.surname,
-      born_date: user.born_date,
       avatar: user.avatar,
     }
     next();

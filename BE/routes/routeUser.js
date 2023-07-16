@@ -9,6 +9,7 @@ const router = express.Router();
 
 //middleware Login
 const bcrypterAuth = require('../middleware/midwareLogin');
+const validationToken = require('../middleware/middJWT');
 
 
 
@@ -21,7 +22,7 @@ router.post('/login', bcrypterAuth, (req, res) => {
                 statusCode: 200,
                 message: 'Login successfully',
                 token,
-                user,
+                user
             });
         } else {
             res.status(401).send({
@@ -42,7 +43,7 @@ router.post('/login', bcrypterAuth, (req, res) => {
 
 //When register crypting pw
 router.post('/register', async (req, res) => {
-    bcrypt.hash(req.body.password, 10)
+    bcrypt.hash(req.body.password, 10)//crypting password
     .then((hash)=>{
         const user = new SchemaUser({
             email: req.body.email,
@@ -68,6 +69,57 @@ router.post('/register', async (req, res) => {
         });
     });
 });
+
+
+
+router.post('/validationDelete', validationToken, async (req, res) => {
+    try{
+        const response = await SchemaUser.findById(req.userId);
+        if(!response){
+            return res.status(404).json({
+                message: 'User not found',
+            });
+        }
+        const pass = await bcrypt.compare(req.body.password, response.password);
+        if(!pass){
+            return res.status(401).json({
+                message: 'Authentication failed',
+            });
+            
+        }
+        res.status(201).json({
+            message: 'User found',
+            data: response,
+        });
+    }
+    catch(error){
+        res.status(500).json({
+            error: error.message,
+        });
+    }
+});
+
+
+router.delete('/delete', validationToken, async (req, res) => {
+    try {
+        console.log(req.userId);
+        const response = await SchemaUser.findByIdAndDelete(req.userId);
+        if (!response) {
+            return res.status(404).json({
+                message: 'User not found',
+            });
+        }
+        res.status(201).json({
+            message: 'User deleted successfully',
+            data: response,
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: error.message,
+        });
+    }
+});
+
 
 
 

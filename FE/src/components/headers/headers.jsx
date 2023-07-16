@@ -21,8 +21,8 @@ export default function Header({name}) {
                     <Lottie options={lottieOptions} width={500} />
                 </Col>
                 <Col className="d-flex flex-column align-items-center justify-content-center blog-main-title mb-3">
-                    <h1>Walcome on Strive Blog {name}!</h1>
-                    <p className="fs-3 m-4"><span className="text-success">Explore our blog </span>A World of Discoveries and Inspiration!</p>
+                    <h1 className="display-1 text-start">Walcome on Strive Blog {name}!</h1>
+                    <p className="display-6 m-4"><span className="text-success">Explore our blog </span>A World of Discoveries and Inspiration!</p>
                 </Col>
             </Row>
         </Container>

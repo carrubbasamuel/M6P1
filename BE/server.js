@@ -28,7 +28,6 @@ const User = require("./routes/routeUser.js");
 
 // middleware
 app.use(express.json());
-
 const validationToken = require("./middleware/middJWT.js");
 
 // routes

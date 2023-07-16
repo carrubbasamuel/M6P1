@@ -19,7 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={userLogged && userLogged.statusCode === 200  ? <Home /> : <Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={userLogged && userLogged.statusCode === 200 && <Dashboard user={userLogged.user._id} />} />
+        <Route path="/dashboard" element={userLogged && userLogged.statusCode === 200 && <Dashboard />} />
         <Route path="/blog/:id" element={<Blog />} />
         <Route path="/new" element={<NewBlogPost />} />
       </Routes>

@@ -7,14 +7,16 @@ import { fetchMyPosts } from "../../redux/reducers/PostSlice";
 import "./style.css";
 
 
-export default function Dashboard({user}) {
+export default function Dashboard() {
     const dispatch = useDispatch();
     const [posts, setPosts] = useState([]);
-    
 
     useEffect(() => {
-        console.log(user);  
-        dispatch(fetchMyPosts(user)).then((res) => setPosts(res.payload)).catch((err) => console.log(err))
+        window.scrollTo(0, 0);
+      }, []);
+    
+    useEffect(() => { 
+        dispatch(fetchMyPosts()).then((res) => setPosts(res.payload)).catch((err) => console.log(err))
     }, [dispatch]);
 
     console.log(posts);
@@ -23,7 +25,6 @@ export default function Dashboard({user}) {
         <Container className="dash">
 
           <BlogList posts={posts} />
-        
     
         </Container>
     )

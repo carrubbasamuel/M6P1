@@ -8,3 +8,7 @@ GET http://localhost:3003/posts
 ################
 
  http://localhost:3003/post/like/64b08fb923577febdfc029c6 HTTP/1.1
+
+
+###########
+DELETE http://localhost:3003/delete
