@@ -13,16 +13,16 @@ export default function Dashboard({user}) {
     
 
     useEffect(() => {
-        console.log(user);
+        console.log(user);  
         dispatch(fetchMyPosts(user)).then((res) => setPosts(res.payload)).catch((err) => console.log(err))
-    }, [dispatch, user]);
+    }, [dispatch]);
 
     console.log(posts);
 
     return(
         <Container className="dash">
 
-         <BlogList posts={posts} />
+          <BlogList posts={posts} />
         
     
         </Container>

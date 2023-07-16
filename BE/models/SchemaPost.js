@@ -17,6 +17,10 @@ const SchemaPost = new mongoose.Schema({
         type: String,
         required: true,
     },
+    readTime: {
+        value: Number,
+        unit: String,
+    },
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

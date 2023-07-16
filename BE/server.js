@@ -31,8 +31,6 @@ app.use(express.json());
 
 const validationToken = require("./middleware/middJWT.js");
 
-
-
 // routes
 app.use("/", User);
 app.use("/", validationToken, Post);

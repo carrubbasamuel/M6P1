@@ -2,8 +2,8 @@ import React, { useRef } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import "react-quill/dist/quill.snow.css";
 import { useDispatch } from "react-redux";
-import { fetchNewPost } from "../../redux/reducers/PostSlice";
 import { useNavigate } from "react-router-dom";
+import { fetchNewPost } from "../../redux/reducers/PostSlice";
 import "./styles.css";
 
 
@@ -16,6 +16,7 @@ const NewBlogPost = props => {
   const title = useRef(null);
   const category = useRef(null);
   const content = useRef(null);
+  const time = useRef(null);
 
 
   const handleSubmit = (e) => {
@@ -23,6 +24,10 @@ const NewBlogPost = props => {
     const newBlog = {
       cover: cover.current.value,
       title: title.current.value,
+      readTime: {
+        value: time.current.value,
+        unit: "minute",
+      },
       category: category.current.value,
       content: content.current.value,
     };
@@ -38,17 +43,21 @@ const NewBlogPost = props => {
           <Form.Control size="lg" placeholder="Title" ref={cover} />
         </Form.Group>
         <Form.Group controlId="blog-form" className="mt-3">
+          <Form.Label>ReadTime</Form.Label>
+          <Form.Control size="lg" placeholder="ex. 10" ref={time} />
+        </Form.Group>
+        <Form.Group controlId="blog-form" className="mt-3">
           <Form.Label>Titolo</Form.Label>
           <Form.Control size="lg" placeholder="Title" ref={title} />
         </Form.Group>
         <Form.Group controlId="blog-category" className="mt-3">
           <Form.Label >Categoria</Form.Label>
           <Form.Control ref={category} size="lg" as="select">
-            <option>Categoria 1</option>
-            <option>Categoria 2</option>
-            <option>Categoria 3</option>
-            <option>Categoria 4</option>
-            <option>Categoria 5</option>
+            <option>Seleziona una categoria</option>
+            <option>Attualità</option>
+            <option>Cultura generale</option>
+            <option>Ultima ora</option>
+            <option>Gossip</option>
           </Form.Control>
         </Form.Group>
         <Form.Group controlId="blog-content" className="mt-3">

@@ -18,6 +18,7 @@ export default function Register() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if(avatar.current.value === "") avatar.current.value = "https://static.vecteezy.com/system/resources/thumbnails/001/840/618/small/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg"
         const formData = {
             email: mail.current.value,
             password: password.current.value,

@@ -1,5 +1,8 @@
 import React from "react";
 import { Container, Dropdown, Navbar } from "react-bootstrap";
+import { BiLogOut } from "react-icons/bi";
+import { BsFileEarmarkPlus } from "react-icons/bs";
+import { LuLayoutDashboard } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
@@ -36,9 +39,9 @@ const NavBar = props => {
 
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item as={Link} to="/dashboard">Dashboard</Dropdown.Item>
-                  <Dropdown.Item as={Link} to="/new">New Post</Dropdown.Item>
-                  <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/dashboard">Dashboard <LuLayoutDashboard className="ms-3"/> </Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/new">New Post <BsFileEarmarkPlus className="ms-3"/> </Dropdown.Item>
+                  <Dropdown.Item onClick={handleLogout}>Logout <BiLogOut className="ms-3"/> </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </div>

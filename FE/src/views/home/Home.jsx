@@ -2,13 +2,14 @@ import React from "react";
 import { Container } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import BlogList from "../../components/blog/blog-list/BlogList";
+import Header from "../../components/headers/headers";
 import "./styles.css";
 
 const Home = props => {
   const user = useSelector(state => state.login.userLogged);
   return (
     <Container fluid="sm">
-      <h1 className="blog-main-title mb-3">Benvenuto sullo Strive Blog {user && user.user.name}!</h1>
+      <Header name={user && user.user.name} />
       <BlogList />
     </Container>
   );

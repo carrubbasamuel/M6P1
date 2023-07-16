@@ -14,30 +14,33 @@ export const fetchAuthors = createAsyncThunk(
           "Authorization": "Bearer " + ApiKey,
         },
       });
-      console.log(response);
+
       const { data: { posts } } = response; // Utilizza data destructuring per estrarre i dati dal response object
       return posts;
     } catch (error) {
-        dispatch(logout());
+        if(error.response.status === 401) dispatch(logout());
       throw error;
     }
   }
 );
 
-// Resto del codice del tuo slice, reducers, ecc.
+
+
+
 export const fetchNewPost = createAsyncThunk(
     'authors/fetchNewPost',
     async (post, { getState }) => {
         const user = getState().login.userLogged;
-        console.log(user);
         const { _id } = user.user;
+        const ApiKey = user.token;
         try {
             const response = await axios.post('http://localhost:3003/posted/' + _id, post, {
                 headers: {
                     'Content-Type': 'application/json',
-                },
+                    "Authorization": "Bearer " + ApiKey,
+                }
             });
-            const { data } = response; // Utilizza data destructuring per estrarre i dati dal response object
+            const { data } = response;
             return data;
         } catch (error) {
             console.log(error);
@@ -48,17 +51,30 @@ export const fetchNewPost = createAsyncThunk(
 
 export const fetchMyPosts = createAsyncThunk(
     'authors/fetchMyPosts',
-    async (id) => {
+    async (id, { getState }) => {
+        const user = getState().login.userLogged;
+        const { token } = user;
+
         try {
-            const response = await axios.get('http://localhost:3003/MyPosts/' + id);
+            const response = await axios.get('http://localhost:3003/MyPosts/' + id, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": "Bearer " + token,
+                }
+            });
             const { data: { posts } } = response; 
             return posts;
         } catch (error) {
             console.log(error);
+            getState().author.error = error;
             throw error; 
+            
         }
     }
 )
+
+
+
 
 const initialState = {
     data: [],

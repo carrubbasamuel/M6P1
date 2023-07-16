@@ -1,7 +1,6 @@
 const express = require('express');
 const mongo = require('mongoose');
 const SchemaPost = require('../models/SchemaPost');
-const SchemaUser = require('../models/SchemaUser');
 
 
 const router = express.Router();
@@ -12,7 +11,10 @@ const router = express.Router();
 
 router.get('/posts', async (req, res) => {
   try {
-    const posts = await SchemaPost.find().populate('author');
+    const posts = await SchemaPost.find().populate({
+      path: 'author',
+      select: 'name surname avatar',
+    });
 
     if (posts.length === 0) {
       return res.status(404).json({
@@ -43,8 +45,9 @@ router.post('/posted/:id', async (req, res) => {
       title: req.body.title,
       category: req.body.category,
       cover: req.body.cover,
+      readTime: req.body.readTime,
       content: req.body.content,
-      author: req.middle, // Riferimento all'ID dell'utente
+      author: req.userId, // Riferimento all'ID dell'utente
     });
 
     await newPost.save();
@@ -67,7 +70,10 @@ router.post('/posted/:id', async (req, res) => {
 // Get posts by author 
 router.get('/MyPosts/:id', async (req, res) => {
   try {
-    const posts = await SchemaPost.find({ author: req.params.id }).populate('author');
+    const posts = await SchemaPost.find({ author: req.params.id }).populate({
+      path: 'author',
+      select: 'name surname avatar',
+    });
     if (posts.length === 0) {
       return res.status(404).json({
         statusCode: 404,
