@@ -1,6 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap";
 import Lottie from "react-lottie";
 import animation from "./animationLottie.json";
+import "./header.css"
 
 
 export default function Header({name}) {
@@ -15,7 +16,7 @@ export default function Header({name}) {
     };
 
     return (
-        <Container className="mt-5 mb-5">
+        <Container id="header" className="mt-5 mb-5">
             <Row>
             <Col className="p-0">
                     <Lottie options={lottieOptions} width={500} />
