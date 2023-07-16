@@ -3,25 +3,25 @@ import axios from "axios";
 import { logout } from "./LoginSlice";
 
 export const fetchAuthors = createAsyncThunk(
-  'authors/fetchAuthors',
-  async (_, { getState, dispatch }) => {
-    try {
-      const state = getState();
-      const ApiKey = state.login.userLogged.token; 
-      const response = await axios.get('http://localhost:3003/posts', {
-        headers: {
-          'Content-Type': 'application/json',
-          "Authorization": "Bearer " + ApiKey,
-        },
-      });
+    'authors/fetchAuthors',
+    async (_, { getState, dispatch }) => {
+        try {
+            const state = getState();
+            const ApiKey = state.login.userLogged.token;
+            const response = await axios.get('http://localhost:3003/posts', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": "Bearer " + ApiKey,
+                },
+            });
 
-      const { data: { posts } } = response; // Utilizza data destructuring per estrarre i dati dal response object
-      return posts;
-    } catch (error) {
-        if(error.response.status === 401) dispatch(logout());
-      throw error;
+            const { data: { posts } } = response; // Utilizza data destructuring per estrarre i dati dal response object
+            return posts;
+        } catch (error) {
+            if (error.response.status === 401) dispatch(logout());
+            throw error;
+        }
     }
-  }
 );
 
 
@@ -60,17 +60,39 @@ export const fetchMyPosts = createAsyncThunk(
                     "Authorization": "Bearer " + token,
                 }
             });
-            const { data: { posts } } = response; 
+            const { data: { posts } } = response;
+            console.log(posts);
             return posts;
         } catch (error) {
             console.log(error);
             getState().author.error = error;
-            throw error; 
-            
+            throw error;
+
         }
     }
 )
 
+export const fetchDeletePost = createAsyncThunk(
+    'authors/fetchDeletePost',
+    async (id, { getState }) => {
+        try {
+            const user = getState().login.userLogged;
+            const { token } = user;
+            const response = await axios.delete(`http://localhost:3003/delete/${id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": "Bearer " + token,
+                }
+            });
+            const { data } = response;
+            return data;
+
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+)
 
 
 
@@ -90,7 +112,7 @@ const PostSlice = createSlice({
                 state.loading = true;
             })
             .addCase(fetchAuthors.fulfilled, (state, action) => {
-                if(action.payload.statusCode === 401) {
+                if (action.payload.statusCode === 401) {
                     state.tokenValidation = action.payload.statusCode;
                     state.loading = false;
                     return;

@@ -31,7 +31,7 @@ const NewBlogPost = props => {
       category: category.current.value,
       content: content.current.value,
     };
-    dispatch(fetchNewPost(newBlog)).then(()=> navigate('/') )
+    dispatch(fetchNewPost(newBlog)).then(()=> navigate('/dashboard') )
   }
 
   

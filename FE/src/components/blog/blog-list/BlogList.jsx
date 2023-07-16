@@ -6,7 +6,7 @@ import { fetchAuthors } from "../../../redux/reducers/PostSlice";
 import BlogItem from "../blog-item/BlogItem";
 import BlogNotFound from "../blog-notfound/blog-notfound";
 
-const BlogList = ({posts}) => {
+const BlogList = ({posts, setPosts}) => {
   const dispatch = useDispatch();
   let authors = useSelector((state) => state.author.data);
   const location = useLocation();
@@ -36,7 +36,7 @@ const BlogList = ({posts}) => {
             marginBottom: 50,
           }}
         >
-          <BlogItem key={post.title} {...post} />
+          <BlogItem key={post.title} {...post} setPosts={setPosts} />
         </Col>
       ))}
       {authors === null && <BlogNotFound />}

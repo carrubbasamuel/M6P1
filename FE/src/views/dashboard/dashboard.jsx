@@ -24,7 +24,7 @@ export default function Dashboard() {
     return(
         <Container className="dash">
 
-          <BlogList posts={posts} />
+          <BlogList posts={posts} setPosts={setPosts} />
     
         </Container>
     )

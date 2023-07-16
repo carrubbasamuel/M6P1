@@ -94,6 +94,33 @@ router.get('/MyPosts', async (req, res) => {
   }
 });
 
+//Delate post by id
+router.delete('/delete/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await SchemaPost.findByIdAndDelete(id);
+    if(!post) {
+      return res.status(404).json({
+        statusCode: 404,
+        message: 'Post not found!',
+      });
+    }
+    res.status(200).json({
+      statusCode: 200,
+      message: 'Post deleted successfully',
+      post,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      statusCode: 500,
+      message: 'Internal server error',
+    });
+  }
+});
+
+
+
 
 
 
