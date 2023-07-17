@@ -10,6 +10,7 @@ const router = express.Router();
 //middleware Login
 const bcrypterAuth = require('../middleware/midwareLogin');
 const validationToken = require('../middleware/middJWT');
+const { validationNewUser, validateMiddleware} = require('../middleware/midValidationExpress');
 
 
 
@@ -42,16 +43,12 @@ router.post('/login', bcrypterAuth, (req, res) => {
 
 
 //When register crypting pw
-router.post('/register', async (req, res) => {
-    bcrypt.hash(req.body.password, 10)//crypting password
+router.post('/register',validationNewUser, validateMiddleware, (req, res) => {
+    bcrypt.hash(req.body.password, 10)
     .then((hash)=>{
         const user = new SchemaUser({
-            email: req.body.email,
+            ...req.body,
             password: hash,//hash password
-            name: req.body.name,
-            surname: req.body.surname,
-            born_date: req.body.born_date,
-            avatar: req.body.avatar,
         });
         user.save().then(()=>{
             res.status(201).json({

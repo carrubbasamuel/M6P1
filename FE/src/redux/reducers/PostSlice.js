@@ -4,19 +4,18 @@ import { logout } from "./LoginSlice";
 
 export const fetchAuthors = createAsyncThunk(
     'authors/fetchAuthors',
-    async (_, { getState, dispatch }) => {
+    async (currentPage, { getState, dispatch }) => {
         try {
             const state = getState();
             const ApiKey = state.login.userLogged.token;
-            const response = await axios.get('http://localhost:3003/posts', {
+            const response = await axios.get(`http://localhost:3003/posts?page=${currentPage}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     "Authorization": "Bearer " + ApiKey,
                 },
             });
-
-            const { data: { posts } } = response; // Utilizza data destructuring per estrarre i dati dal response object
-            return posts;
+            const { data } = response; // Utilizza data destructuring per estrarre i dati dal response object
+            return data;
         } catch (error) {
             if (error.response.status === 401) dispatch(logout());
             throw error;
@@ -72,6 +71,7 @@ export const fetchMyPosts = createAsyncThunk(
     }
 )
 
+
 export const fetchDeletePost = createAsyncThunk(
     'authors/fetchDeletePost',
     async (id, { getState }) => {
@@ -101,6 +101,7 @@ const initialState = {
     loading: false,
     error: null,
     tokenValidation: null,
+    totalPage: 0,
 }
 
 const PostSlice = createSlice({
@@ -117,7 +118,8 @@ const PostSlice = createSlice({
                     state.loading = false;
                     return;
                 }
-                state.data = action.payload;
+                state.data = action.payload.posts;
+                state.totalPage = action.payload.pagination;    
                 state.loading = false;
             })
             .addCase(fetchAuthors.rejected, (state, action) => {

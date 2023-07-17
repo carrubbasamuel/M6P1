@@ -3,6 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { fetchAuthors } from "../../../redux/reducers/PostSlice";
+import PaginationPosts from "../../pagination/pagination";
 import BlogItem from "../blog-item/BlogItem";
 import BlogNotFound from "../blog-notfound/blog-notfound";
 
@@ -40,6 +41,7 @@ const BlogList = ({posts, setPosts}) => {
         </Col>
       ))}
       {authors === null && <BlogNotFound />}
+      <PaginationPosts />
       
     </Row>
   );

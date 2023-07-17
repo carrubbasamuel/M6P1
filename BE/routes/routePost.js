@@ -1,6 +1,7 @@
 const express = require('express');
 const mongo = require('mongoose');
 const SchemaPost = require('../models/SchemaPost');
+const {validationNewPost, validateMiddleware} = require('../middleware/midValidationExpress');
 
 
 const router = express.Router();
@@ -8,13 +9,18 @@ const router = express.Router();
 
 
 
-
 router.get('/posts', async (req, res) => {
+  const { page = 1, itemForPage = 9 } = req.query;
+
   try {
-    const posts = await SchemaPost.find().populate({
-      path: 'author',
-      select: 'name surname avatar',
-    });
+    const posts = await SchemaPost.find()
+      .populate({
+        path: 'author',
+        select: 'name surname avatar',
+      })
+      .limit(itemForPage)
+      .skip((page - 1) * itemForPage)
+      .sort({ createdAt: -1 });
 
     if (posts.length === 0) {
       return res.status(404).json({
@@ -27,6 +33,7 @@ router.get('/posts', async (req, res) => {
       statusCode: 200,
       message: 'Posts retrieved successfully',
       posts,
+      pagination: Math.ceil(await SchemaPost.countDocuments() / itemForPage),//Math.ceil arrotonda per eccesso countDocuments() / itemForPage. count Document conta i documenti presenti nel db schemaPost  
     });
   } catch (error) {
     console.error(error);
@@ -38,8 +45,12 @@ router.get('/posts', async (req, res) => {
 });
 
 
+
+
+
+
 // Post new post
-router.post('/posted', async (req, res) => {
+router.post('/posted',validationNewPost, validateMiddleware, async (req, res) => {
   try {
     const newPost = new SchemaPost({
       title: req.body.title,
