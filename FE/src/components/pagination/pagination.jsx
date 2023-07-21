@@ -3,40 +3,36 @@ import Pagination from 'react-bootstrap/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAuthors } from '../../redux/reducers/PostSlice';
 
-
-
-
 export default function PaginationPosts() {
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const pagination = useSelector((state) => state.author.totalPage);
   const dispatch = useDispatch();
 
   const clickHandler = (e) => {
-    setPage(Number(e.target.text));
+    setCurrentPage(Number(e.target.text));
   };
 
   useEffect(() => {
-    if (page < 1){
-        setPage(1);
-    }else if(page > pagination){
-        setPage(pagination);
+    if (currentPage < 1) {
+      setCurrentPage(1);
+    } else if (currentPage > pagination) {
+      setCurrentPage(pagination);
+    } else {
+      dispatch(fetchAuthors(currentPage));
     }
-    dispatch(fetchAuthors(page));
-  }, [page, dispatch, pagination]);
-
-
+  }, [dispatch, currentPage, pagination]);
 
   return (
     <Pagination>
-      <Pagination.Prev onClick={()=> setPage(page-1)} />
+      <Pagination.Prev onClick={() => setCurrentPage((prevPage) => prevPage - 1)} />
 
       {Array.from({ length: pagination }, (_, i) => (
-        <Pagination.Item key={i} active={i + 1 === page} onClick={clickHandler}>
-            {i + 1}
+        <Pagination.Item key={i} active={i + 1 === currentPage} onClick={clickHandler}>
+          {i + 1}
         </Pagination.Item>
-        ))}
+      ))}
 
-      <Pagination.Next onClick={()=> setPage(page+1)} />
+      <Pagination.Next onClick={() => setCurrentPage((prevPage) => prevPage + 1)} />
     </Pagination>
   );
 }

@@ -28,12 +28,20 @@ export const fetchAuthors = createAsyncThunk(
 export const fetchNewPost = createAsyncThunk(
     'authors/fetchNewPost',
     async (post, { getState }) => {
+        console.log(post);
+        const formData = new FormData();
+        formData.append('title', post.title);
+        formData.append('category', post.category);
+        formData.append('coverImg', post.cover);
+        formData.append('content', post.content);
+        formData.append('readTime.value', post.readTime.value);
+
         const user = getState().login.userLogged;
         const ApiKey = user.token;
         try {
-            const response = await axios.post('http://localhost:3003/posted', post, {
+            const response = await axios.post('http://localhost:3003/posted', formData, {
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data',
                     "Authorization": "Bearer " + ApiKey,
                 }
             });

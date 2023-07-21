@@ -25,18 +25,29 @@ db.once("open", () => console.log("Connessione al DB avvenuta con successo!"));/
 // import delle routes
 const Post = require("./routes/routePost.js");
 const User = require("./routes/routeUser.js");
+const Resource = require("./routes/routeResources.js");
+
+
 
 // middleware
 app.use(express.json());
 const validationToken = require("./middleware/middJWT.js");
 
+
+
 // routes
+app.use("/images", express.static("images"));
 app.use("/", User);
+app.use("/", Resource);
+
+
 app.use("/", validationToken, Post);
 
 
 
 
-// avvio del server
+//avvio del server
 app.listen(3003, () => console.log("Server avviato con successo!"));
+
+//socket.io
   

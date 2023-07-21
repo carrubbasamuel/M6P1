@@ -41,7 +41,6 @@ const BlogList = ({posts, setPosts}) => {
         </Col>
       ))}
       {authors === null && <BlogNotFound />}
-      <PaginationPosts />
       
     </Row>
   );

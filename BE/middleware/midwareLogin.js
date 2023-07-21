@@ -8,7 +8,7 @@ const generateToken = (user) => {
     userId: user._id,
     email: user.email
   }, jwtSecretKey, {
-    expiresIn: '1h', // Scadenza del token (5 ore)
+    expiresIn: '5h', // Scadenza del token (5 ore)
   });
   return token;
 };

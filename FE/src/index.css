@@ -2,3 +2,6 @@ body {
   font-family: 'Noto Serif', serif;
 }
 
+.sr-only{
+  display: none;
+}

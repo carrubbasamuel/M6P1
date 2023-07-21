@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Button, Card } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
@@ -8,16 +8,17 @@ import "./styles.css";
 
 
 const BlogItem = (props) => {
-  const { title, cover, author, _id, setPosts } = props;
+  const { title,cover, author, _id, setPosts } = props;
   const location = useLocation();
   const dispatch = useDispatch();
 
 
+  
+
 
   return (
-
     <Card className="blog-card shadow">
-      <Card.Img variant="top" src={cover} className="blog-cover" />
+      <Card.Img variant="top" src={cover.includes('http') ? cover : `http://localhost:3003/images/${cover}`} className="blog-cover" />
       <Card.Body as={Link} to={`/blog/${_id}`}>
         <Card.Title>{title}</Card.Title>
       </Card.Body>
