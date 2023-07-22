@@ -1,11 +1,11 @@
 import React from "react";
-import { Button, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
+import { TiDocumentDelete } from 'react-icons/ti';
 import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { fetchDeletePost, fetchMyPosts } from "../../../redux/reducers/PostSlice";
 import BlogAuthor from "../blog-author/BlogAuthor";
 import ModalReview from "./ModalReview";
-import ReviewList from "./ReviewList";
 import "./styles.css";
 
 
@@ -23,15 +23,14 @@ const BlogItem = ({ posts }) => {
       </Card.Body>
       <Card.Footer className="d-flex justify-content-between align-items-">
         <BlogAuthor {...author} />
-        {location.pathname === "/dashboard"
-          && <Button
-            variant="danger"
-            onClick={() => dispatch(fetchDeletePost(_id)).then(() => dispatch(fetchMyPosts()))}>
-            Delete
-          </Button>}
+        <div className="align-self-end fs-3">
         <ModalReview postId={_id} />
+        {location.pathname === "/dashboard"
+          && <TiDocumentDelete onClick={() => dispatch(fetchDeletePost(_id)).then(()=> dispatch(fetchMyPosts()))} style={{ cursor: 'pointer' }} />}
+
+        </div>
+        
       </Card.Footer>
-      <ReviewList posts={posts} />
     </Card>
 
   );

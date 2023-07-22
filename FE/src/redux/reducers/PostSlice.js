@@ -104,7 +104,6 @@ export const fetchDeletePost = createAsyncThunk(
 
 const initialState = {
     data: [],
-    postId: null,
     loading: false,
     error: null,
     tokenValidation: null,
@@ -115,18 +114,6 @@ const initialState = {
 const PostSlice = createSlice({
     name: 'post',
     initialState,
-    reducers: {
-        setPostId: (state, action) => {
-            state.postId = action.payload;
-        },
-
-        setShowReviews: (state, action) => {
-            const find = state.data.find(post => post._id === action.payload);
-            if (find) {
-                find.showReviews = !find.showReviews;
-            }
-        }
-    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchAuthors.pending, (state, action) => {
@@ -162,5 +149,5 @@ const PostSlice = createSlice({
 })
 
 
-export const { setShowReviews, setPostId } = PostSlice.actions;
+
 export default PostSlice.reducer;

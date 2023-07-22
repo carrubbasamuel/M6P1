@@ -2,8 +2,11 @@ import { useRef, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import { AiOutlineComment } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
-import { fetchAddReview } from '../../../redux/reducers/ReviewSlice';
+import { fetchAddReview, fetchGetReviews } from '../../../redux/reducers/ReviewSlice';
+
+import ReviewList from './ReviewList';
 
 
 function ModalReview(props) {
@@ -11,7 +14,10 @@ function ModalReview(props) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setShow(true);
+    dispatch(fetchGetReviews(props.postId));
+  };
 
   const rate = useRef(0);
   const comment = useRef('');
@@ -23,22 +29,21 @@ function ModalReview(props) {
       comment: comment.current.value,
       postId: props.postId
     }
-    
-    dispatch(fetchAddReview(data)); 
+
+    dispatch(fetchAddReview(data)).then(dispatch(fetchGetReviews(props.postId)));
   }
 
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
+      <AiOutlineComment onClick={handleShow} style={{ cursor: 'pointer' }} />
 
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+        <Modal.Header>
+          <Modal.Title>Add your Review</Modal.Title>
         </Modal.Header>
 
+        <ReviewList />
         <Form.Group controlId="exampleForm.ControlSelect1">
           <Form.Label>Rating</Form.Label>
           <Form.Control as="select" ref={rate}>
@@ -47,19 +52,19 @@ function ModalReview(props) {
             <option>3</option>
           </Form.Control>
         </Form.Group>
-        <Form.Group controlId="exampleForm.ControlTextarea1">
-          <Form.Label>Comment</Form.Label>
-          <Form.Control as="textarea" rows={3} ref={comment} />
-        </Form.Group>
-        <Button onClick={handleSubmit}>Add</Button>
+        <div className='d-flex '>
+
+          <Form.Group controlId="exampleForm.ControlTextarea1">
+            <Form.Label>Comment</Form.Label>
+            <Form.Control as="textarea" rows={3} ref={comment} />
+          </Form.Group>
+          <Button className='m-3' onClick={handleSubmit}>Add</Button>
+        </div>
 
 
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
