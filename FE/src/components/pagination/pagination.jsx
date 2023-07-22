@@ -1,30 +1,35 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Pagination from 'react-bootstrap/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAuthors } from '../../redux/reducers/PostSlice';
 
 export default function PaginationPosts() {
   const [currentPage, setCurrentPage] = useState(1);
-  const pagination = useSelector((state) => state.author.totalPage);
   const dispatch = useDispatch();
+  const totalPage = useSelector((state) => state.author.totalPage);
+
+  // Memoize the pagination value to avoid unnecessary calculations on every render
+  const pagination = useMemo(() => totalPage, [totalPage]);
 
   const clickHandler = (e) => {
-    setCurrentPage(Number(e.target.text));
+    const newPage = Number(e.target.text);
+    if (newPage >= 1 && newPage <= pagination) {
+      setCurrentPage(newPage);
+    }
   };
 
   useEffect(() => {
-    if (currentPage < 1) {
-      setCurrentPage(1);
-    } else if (currentPage > pagination) {
-      setCurrentPage(pagination);
-    } else {
+    // Ensure the currentPage is within valid bounds before dispatching the action
+    if (currentPage >= 1 && currentPage <= pagination) {
       dispatch(fetchAuthors(currentPage));
     }
   }, [dispatch, currentPage, pagination]);
 
   return (
     <Pagination>
-      <Pagination.Prev onClick={() => setCurrentPage((prevPage) => prevPage - 1)} />
+      <Pagination.Prev
+        onClick={() => setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))}
+      />
 
       {Array.from({ length: pagination }, (_, i) => (
         <Pagination.Item key={i} active={i + 1 === currentPage} onClick={clickHandler}>
@@ -32,7 +37,9 @@ export default function PaginationPosts() {
         </Pagination.Item>
       ))}
 
-      <Pagination.Next onClick={() => setCurrentPage((prevPage) => prevPage + 1)} />
+      <Pagination.Next
+        onClick={() => setCurrentPage((prevPage) => Math.min(prevPage + 1, pagination))}
+      />
     </Pagination>
   );
 }

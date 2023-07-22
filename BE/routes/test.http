@@ -63,22 +63,26 @@ Content-Type: application/json
 ##########
 GET http://localhost:3003/resource?ageA=26
 
-
-###############
+##########
 GET http://localhost:3003/resource?ageA=26&ageB=30
 
-##########
 
+##########
 GET http://localhost:3003/resource/isactive
 
-##########
 
+##########
 GET http://localhost:3003/resources/eye?notEyeColor=green
+
 
 #########
 GET http://localhost:3003/resources/notEye
 
-##########
 
+##########
 GET http://localhost:3003/resources/company
 
+
+
+##############
+GET http://localhost:3003/getReviews/64bbb2628b5b1ac2bbcfc137

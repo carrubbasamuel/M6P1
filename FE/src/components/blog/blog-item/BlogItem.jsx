@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Card } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { fetchDeletePost, fetchMyPosts } from "../../../redux/reducers/PostSlice";
 import BlogAuthor from "../blog-author/BlogAuthor";
+import ModalReview from "./ModalReview";
+import ReviewList from "./ReviewList";
 import "./styles.css";
 
 
@@ -11,9 +13,6 @@ const BlogItem = (props) => {
   const { title,cover, author, _id, setPosts } = props;
   const location = useLocation();
   const dispatch = useDispatch();
-
-
-  
 
 
   return (
@@ -32,7 +31,9 @@ const BlogItem = (props) => {
             .then((res)=>setPosts(res.payload))}>
             Delete
           </Button>}
+          <ModalReview postId={_id} />
       </Card.Footer>
+      <ReviewList posts={props} />
     </Card>
 
   );

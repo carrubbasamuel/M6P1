@@ -68,7 +68,6 @@ export const fetchMyPosts = createAsyncThunk(
                 }
             });
             const { data: { posts } } = response;
-            console.log(posts);
             return posts;
         } catch (error) {
             console.log(error);
@@ -103,18 +102,31 @@ export const fetchDeletePost = createAsyncThunk(
 )
 
 
-
 const initialState = {
     data: [],
+    postId: null,
     loading: false,
     error: null,
     tokenValidation: null,
     totalPage: 0,
 }
 
+
 const PostSlice = createSlice({
     name: 'post',
     initialState,
+    reducers: {
+        setPostId: (state, action) => {
+            state.postId = action.payload;
+        },
+        
+        setShowReviews: (state, action) => {
+            const find = state.data.find(post => post._id === action.payload);
+            if (find) {
+                find.showReviews = !find.showReviews;
+            }
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchAuthors.pending, (state, action) => {
@@ -134,7 +146,20 @@ const PostSlice = createSlice({
                 state.error = action.error.message;
                 state.loading = false;
             })
+            .addCase(fetchMyPosts.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(fetchMyPosts.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.loading = false;
+            })
+            .addCase(fetchMyPosts.rejected, (state, action) => {
+                state.error = action.error.message;
+                state.loading = false;
+            })
     }
 })
 
+
+export const { setShowReviews, setPostId } = PostSlice.actions;
 export default PostSlice.reducer;

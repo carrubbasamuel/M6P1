@@ -2,22 +2,22 @@ const mongoose = require('mongoose');
 
 
 const SchemaReview = new mongoose.Schema({
-    content: {
+    comment: {
         type: String,
         required: true,
     },
-    rete: {
+    rate: {
         type: Number,
         required: true,
     },
-    post: {
+    postId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post',
-        required: true,
     },
-    author: {
+    authorId: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     }
 });
 
-const ModelReview = mongoose.model('Review', SchemaReview, 'reviews');
+module.exports = mongoose.model('Review', SchemaReview, 'reviews');

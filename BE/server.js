@@ -26,6 +26,7 @@ db.once("open", () => console.log("Connessione al DB avvenuta con successo!"));/
 const Post = require("./routes/routePost.js");
 const User = require("./routes/routeUser.js");
 const Resource = require("./routes/routeResources.js");
+const Review = require("./routes/routeReview.js");
 
 
 
@@ -39,6 +40,7 @@ const validationToken = require("./middleware/middJWT.js");
 app.use("/images", express.static("images"));
 app.use("/", User);
 app.use("/", Resource);
+app.use("/", Review);
 
 
 app.use("/", validationToken, Post);
