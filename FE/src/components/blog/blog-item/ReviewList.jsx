@@ -22,12 +22,10 @@ export default function ReviewList(props) {
     dispatch(fetchGetReviews(_id));
   };
 
-
-  
   return showReviews ? (
     <div>
       <button onClick={handleClose}>Close</button>
-      {loading && reviews.length === 0 &&  <div>Loading...</div>}
+      {loading && reviews &&  <div>Loading...</div>}
       <ul>
         {reviews.map((review, i) => (
           <div key={i}>

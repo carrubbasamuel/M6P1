@@ -119,7 +119,7 @@ const PostSlice = createSlice({
         setPostId: (state, action) => {
             state.postId = action.payload;
         },
-        
+
         setShowReviews: (state, action) => {
             const find = state.data.find(post => post._id === action.payload);
             if (find) {
@@ -154,6 +154,7 @@ const PostSlice = createSlice({
                 state.loading = false;
             })
             .addCase(fetchMyPosts.rejected, (state, action) => {
+                state.data = [];
                 state.error = action.error.message;
                 state.loading = false;
             })

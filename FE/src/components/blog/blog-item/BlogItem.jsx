@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Button, Card } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { fetchDeletePost, fetchMyPosts } from "../../../redux/reducers/PostSlice";
 import BlogAuthor from "../blog-author/BlogAuthor";
@@ -9,8 +9,8 @@ import ReviewList from "./ReviewList";
 import "./styles.css";
 
 
-const BlogItem = (props) => {
-  const { title,cover, author, _id, setPosts } = props;
+const BlogItem = ({ posts }) => {
+  const { title, cover, author, _id } = posts;
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -26,14 +26,12 @@ const BlogItem = (props) => {
         {location.pathname === "/dashboard"
           && <Button
             variant="danger"
-            onClick={() => dispatch(fetchDeletePost(_id))
-            .then(()=>dispatch(fetchMyPosts()))
-            .then((res)=>setPosts(res.payload))}>
+            onClick={() => dispatch(fetchDeletePost(_id)).then(() => dispatch(fetchMyPosts()))}>
             Delete
           </Button>}
-          <ModalReview postId={_id} />
+        <ModalReview postId={_id} />
       </Card.Footer>
-      <ReviewList posts={props} />
+      <ReviewList posts={posts} />
     </Card>
 
   );

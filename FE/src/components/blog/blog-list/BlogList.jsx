@@ -1,39 +1,27 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Col, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { fetchAuthors } from "../../../redux/reducers/PostSlice";
 import BlogItem from "../blog-item/BlogItem";
 import BlogNotFound from "../blog-notfound/blog-notfound";
+import { useLocation } from "react-router-dom";
 
-const BlogList = () => {
-  const dispatch = useDispatch();
-  let authors = useSelector((state) => state.author.data);
+
+const BlogList = ({ posts }) => {
   const location = useLocation();
-
-
-  useEffect(() => {
-    if (location.pathname === "/dashboard") {
-      return
-    } else {
-    dispatch(fetchAuthors());
-    }
-  }, [dispatch, location.pathname]);
-
-
-
-  
-  
 
   return (
     <Row>
-      {authors && authors.map((post, i) => (
-        <Col key={`item-${i}`} md={4} style={{ marginBottom: 50 }}>
-          <BlogItem key={post.title} {...post} />
+      {posts && posts.map((post, i) => (
+        <Col
+          key={`item-${i}`}
+          md={4}
+          style={{
+            marginBottom: 50,
+          }}
+        >
+          <BlogItem key={post.title} posts={post} />
         </Col>
       ))}
-      {authors === null && <BlogNotFound />}
-      
+      {posts.length === 0 && location.pathname === '/dashboard' && <BlogNotFound />}
     </Row>
   );
 };
