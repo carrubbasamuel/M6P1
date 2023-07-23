@@ -5,3 +5,7 @@ body {
 .sr-only{
   display: none;
 }
+
+textarea{
+  background-color: black;
+}

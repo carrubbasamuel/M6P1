@@ -53,11 +53,33 @@ export const fetchDeleteReview = createAsyncThunk(
     }
 );
 
+export const fetchEditReview = createAsyncThunk(
+    'review/fetchEditReview',
+    async (review, { getState }) => {
+        const token = getState().login.userLogged.token;
+        try {
+            const response = await axios.patch(`http://localhost:3003/editReview/${review.reviewId}`, review,{
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            return response.data;
+        } catch (error) {
+            throw Error('Failed to edit review.');
+        }
+    }
+);
+
 
 
 
 const initialState = {
     reviews: [],
+    showModal: false,
+    showModalEditMode: false,
+    reviewToEdit: null,
+    rating: 0,
     loading: false,
     error: null,
 };
@@ -66,6 +88,20 @@ const initialState = {
 const reviewSlice = createSlice({
     name: 'review',
     initialState,
+    reducers: {
+        setShowModal(state, action) {
+            state.showModal = action.payload;
+        },
+        setShowModalEditMode(state, action) {
+            state.showModalEditMode = action.payload;
+        },
+        setRating(state, action) {
+            state.rating = action.payload;
+        },
+        setReviewToEdit(state, action) {
+            state.reviewToEdit = action.payload;
+        },
+    },
     extraReducers: builder => {
         builder
             .addCase(fetchGetReviews.pending, (state, action) => {
@@ -84,4 +120,5 @@ const reviewSlice = createSlice({
 
 
 
+export const { setShowModal, setReviewToEdit, setShowModalEditMode, setRating } = reviewSlice.actions;
 export default reviewSlice.reducer;

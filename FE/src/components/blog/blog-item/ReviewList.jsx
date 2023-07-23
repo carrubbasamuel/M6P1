@@ -1,14 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { LuDelete } from "react-icons/lu";
 import { MdBuild } from "react-icons/md";
 import Lottie from "react-lottie";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDeleteReview, fetchGetReviews } from "../../../redux/reducers/ReviewSlice";
+import {
+  fetchDeleteReview,
+  fetchGetReviews,
+  setReviewToEdit,
+  setShowModal,
+  setShowModalEditMode,
+  setRating
+} from "../../../redux/reducers/ReviewSlice";
 import Rate from "./Rate";
+
+
 
 export default function ReviewList({ postId }) {
   const dispatch = useDispatch();
   const { reviews, loading } = useSelector((state) => state.review);
+  const showModalEditMode = useSelector(state => state.review.showModalEditMode);
+
+  const handleEditMode = (review) => {
+    dispatch(setReviewToEdit(review))
+    dispatch(setRating(review.rate));
+    dispatch(setShowModal(false))
+    dispatch(setShowModalEditMode(true));
+  };
+
+  useEffect(() => {
+    if (showModalEditMode === false) {
+      dispatch(fetchGetReviews(postId))
+    }
+  }, [showModalEditMode, dispatch, postId])
+
 
   return (
     <>
@@ -25,8 +49,6 @@ export default function ReviewList({ postId }) {
             }} />
 
           </div>
-
-
         </div>
       }
       <div className="p-3 reviewList">
@@ -41,7 +63,7 @@ export default function ReviewList({ postId }) {
             <div className="d-flex flex-column align-items-end justify-content-center">
               <p><img className="w-25 rounded-circle m-2 shadow" src={review.authorId.avatar} alt="img-profile" />   {review.authorId.email}</p>
               <div className="d-flex">
-                {review.isMine === true && <MdBuild style={{ cursor: 'pointer', fontSize: '18px', marginRight: '10px' }} />}
+                {review.isMine === true && <MdBuild style={{ cursor: 'pointer', fontSize: '18px', marginRight: '10px' }} onClick={() => handleEditMode(review)} />}
                 {review.isMine === true && <LuDelete style={{ cursor: 'pointer', fontSize: '22px' }} onClick={() => dispatch(fetchDeleteReview(review._id)).then(() => dispatch(fetchGetReviews(postId)))} />}
               </div>
 

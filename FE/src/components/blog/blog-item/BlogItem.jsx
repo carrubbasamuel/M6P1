@@ -7,6 +7,7 @@ import { fetchDeletePost, fetchMyPosts } from "../../../redux/reducers/PostSlice
 import BlogAuthor from "../blog-author/BlogAuthor";
 import ModalReview from "./ModalReview";
 import "./styles.css";
+import EditMode from "./editmode";
 
 
 const BlogItem = ({ posts }) => {
@@ -25,6 +26,7 @@ const BlogItem = ({ posts }) => {
         <BlogAuthor {...author} />
         <div className="d-flex align-items-center justify-content-center fs-4">
         <ModalReview postId={_id} />
+        <EditMode />
         {location.pathname === "/dashboard"
           && <TiDocumentDelete onClick={() => dispatch(fetchDeletePost(_id)).then(()=> dispatch(fetchMyPosts()))} style={{ cursor: 'pointer' }} />}
 

@@ -71,6 +71,33 @@ router.delete('/deleteReview/:reviewId', verifyToken, (req, res) => {
         });
 });
 
+router.patch('/editReview/:reviewId', verifyToken, (req, res) => {
+    const { reviewId } = req.params;
+    const { comment, rate } = req.body;
+    Review.findByIdAndUpdate(reviewId, { comment, rate }, { new: true })
+        .then(review => {
+            if (!review) {
+                return res.status(404).json({
+                    statusCode: 404,
+                    message: 'Review not found!',
+                });
+            }
+            return res.status(200).json({
+                statusCode: 200,
+                message: 'Review edited successfully',
+                review,
+            });
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).json({
+                statusCode: 500,
+                message: 'Internal server error',
+            });
+        });
+});
+
+
 
 
 

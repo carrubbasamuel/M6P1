@@ -3,8 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { AiOutlineComment } from 'react-icons/ai';
-import { useDispatch } from 'react-redux';
-import { fetchAddReview, fetchGetReviews } from '../../../redux/reducers/ReviewSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAddReview, fetchGetReviews, setShowModal, setRating } from '../../../redux/reducers/ReviewSlice';
 import Rate from './Rate';
 
 import ReviewList from './ReviewList';
@@ -12,16 +12,16 @@ import ReviewList from './ReviewList';
 
 function ModalReview(props) {
   const dispatch = useDispatch();
-  const [show, setShow] = useState(false);
-  const [rating, setRating] = useState(0 || props.rate);
+  const showModal = useSelector(state => state.review.showModal);
+  const rating = useSelector(state => state.review.rating);
 
   const handleClose = () => {
-    setRating(0);
-    setShow(false)
+    dispatch(setRating(0));
+    dispatch(setShowModal(false));
   };
 
   const handleShow = () => {
-    setShow(true);
+    dispatch(setShowModal(true));
     dispatch(fetchGetReviews(props.postId));
   };
 
@@ -48,19 +48,19 @@ function ModalReview(props) {
 
     <div>
       <AiOutlineComment onClick={handleShow} style={{ cursor: 'pointer' }} />
-      <Modal size='lg' show={show} onHide={handleClose}>
+      <Modal size='lg' show={showModal} onHide={handleClose}>
         <Modal.Header>
           <Modal.Title>Add your Review</Modal.Title>
         </Modal.Header>
 
-        <ReviewList postId={props.postId} setRating={setRating} />
+        <ReviewList postId={props.postId}/>
 
         <Form.Group className='p-2' controlId="exampleForm.ControlTextarea1">
           <Form.Label>Add a comment</Form.Label>
           <Form.Control as="textarea" rows={3} ref={comment} />
         </Form.Group>
         <div className='mt-2 p-3 d-flex flex-column align-items-center ' >
-          <Rate rating={rating} setRating={setRating} />
+          <Rate rating={rating} />
         </div>
         <Modal.Footer className='mt-2'>
           <Button variant="secondary" onClick={handleClose}>
