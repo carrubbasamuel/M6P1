@@ -6,8 +6,8 @@ import { Link, useLocation } from "react-router-dom";
 import { fetchDeletePost, fetchMyPosts } from "../../../redux/reducers/PostSlice";
 import BlogAuthor from "../blog-author/BlogAuthor";
 import ModalReview from "./ModalReview";
-import "./styles.css";
 import EditMode from "./editmode";
+import "./styles.css";
 
 
 const BlogItem = ({ posts }) => {
@@ -25,8 +25,9 @@ const BlogItem = ({ posts }) => {
       <Card.Footer className="d-flex justify-content-between align-items-center">
         <BlogAuthor {...author} />
         <div className="d-flex align-items-center justify-content-center fs-4">
-        <ModalReview postId={_id} />
         <EditMode />
+        <ModalReview postId={_id} />
+        
         {location.pathname === "/dashboard"
           && <TiDocumentDelete onClick={() => dispatch(fetchDeletePost(_id)).then(()=> dispatch(fetchMyPosts()))} style={{ cursor: 'pointer' }} />}
 

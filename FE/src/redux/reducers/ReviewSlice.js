@@ -74,8 +74,8 @@ export const fetchEditReview = createAsyncThunk(
 
 const initialState = {
     reviews: [],
-    showModal: false,
-    showModalEditMode: false,
+    showModal: null,
+    showModalEditMode: null,
     reviewToEdit: null,
     rating: 0,
     loading: false,

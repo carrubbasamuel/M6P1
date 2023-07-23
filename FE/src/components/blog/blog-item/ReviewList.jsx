@@ -23,7 +23,7 @@ export default function ReviewList({ postId }) {
     dispatch(setReviewToEdit(review))
     dispatch(setRating(review.rate));
     dispatch(setShowModal(false))
-    dispatch(setShowModalEditMode(true));
+    dispatch(setShowModalEditMode(review._id));
   };
 
 

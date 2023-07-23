@@ -17,11 +17,11 @@ function ModalReview(props) {
 
   const handleClose = () => {
     dispatch(setRating(0));
-    dispatch(setShowModal(false));
+    dispatch(setShowModal(null));
   };
 
   const handleShow = () => {
-    dispatch(setShowModal(true));
+    dispatch(setShowModal(props.postId));
     dispatch(fetchGetReviews(props.postId));
   };
 
@@ -42,12 +42,14 @@ function ModalReview(props) {
     });
   }
 
+  const isOpen = showModal === props.postId;//unique id for unique modal
+
   return (
 
 
     <div>
       <AiOutlineComment onClick={handleShow} style={{ cursor: 'pointer' }} />
-      <Modal size='lg' show={showModal} onHide={handleClose}>
+      <Modal size='lg' show={isOpen} onHide={handleClose}>
         <Modal.Header>
           <Modal.Title>Add your Review</Modal.Title>
         </Modal.Header>
