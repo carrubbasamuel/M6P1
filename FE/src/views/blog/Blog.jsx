@@ -36,7 +36,7 @@ const Blog = props => {
     return (
       <div className="blog-details-root">
         <Container>
-          <Image className="blog-details-cover" src={blog.cover.includes('http') ? blog.cover : `http://localhost:3003/images/${blog.cover}`} fluid />
+          <Image className="blog-details-cover" src={blog.cover} fluid />
           <h1 className="blog-details-title">{blog.title}</h1>
 
           <div className="blog-details-container">

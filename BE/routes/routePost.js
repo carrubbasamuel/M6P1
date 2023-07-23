@@ -2,7 +2,7 @@ const express = require('express');
 const mongo = require('mongoose');
 const SchemaPost = require('../models/SchemaPost');
 const { validateMiddleware, validationNewPost } = require('../middleware/midValidationExpress');
-const fs = require('fs');
+
 
 const router = express.Router();
 
@@ -50,7 +50,7 @@ router.get('/posts', (req, res) => {
 const checkFilePresence = require('../middleware/midCheckFilePresence');
 
 router.post('/posted', checkFilePresence, validationNewPost, validateMiddleware, (req, res) => {
-  const cover = req.file ? req.file.filename : undefined;
+  const cover = req.file ? req.file.secure_url : undefined;
   const newPost = new SchemaPost({
     title: req.body.title,
     category: req.body.category,
@@ -127,16 +127,6 @@ router.delete('/delete/:id', (req, res) => {
           message: 'Post not found!',
         });
       }
-
-      const imagePath = `images/${post.cover}`;
-      fs.unlink(imagePath, (err) => {
-        if (err) {
-          console.error(err);
-        } else {
-          console.log('Immagine eliminata con successo dopo l\'eliminazione del post.');
-        }
-      });
-
       res.status(200).json({
         statusCode: 200,
         message: 'Post deleted successfully',

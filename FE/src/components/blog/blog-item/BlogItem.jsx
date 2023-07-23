@@ -18,7 +18,7 @@ const BlogItem = ({ posts }) => {
 
   return (
     <Card className="blog-card shadow">
-      <Card.Img variant="top" src={cover.includes('http') ? cover : `http://localhost:3003/images/${cover}`} className="blog-cover" />
+      <Card.Img variant="top" src={cover} className="blog-cover" />
       <Card.Body as={Link} to={`/blog/${_id}`}>
         <Card.Title>{title}</Card.Title>
       </Card.Body>

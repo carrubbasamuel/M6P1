@@ -1,7 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const fs = require('fs');
-const path = require('path');
+
 
 const SchemaUser = require('../models/SchemaUser');
 const SchemaPost = require('../models/SchemaPost');
@@ -75,23 +74,9 @@ router.delete('/delete', validationToken, async (req, res) => {
   try {
 
     const delateReview = await SchemaReview.deleteMany({ authorId: userId });
-    let deletedPosts = await SchemaPost.find({ author: userId }).lean();
-    deletedPosts.forEach((post) => {
-      console.log(post.cover);
-      if (!post.cover.startsWith('http://')) {
-        const imagePath = `images/${post.cover}`;
-        fs.unlink(imagePath, (err) => {
-          if (err) {
-            console.error(err);
-          } else {
-            console.log('Immagine eliminata con successo dopo l\'eliminazione del post.');
-          }
-        });
-      }
-    });
-
-
     deletedPosts = await SchemaPost.deleteMany({ author: userId });
+
+
     const deletedUser = await SchemaUser.findByIdAndDelete(userId);
 
     if (!deletedUser) {
