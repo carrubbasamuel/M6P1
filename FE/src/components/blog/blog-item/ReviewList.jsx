@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { LuDelete } from "react-icons/lu";
 import { MdBuild } from "react-icons/md";
 import Lottie from "react-lottie";
@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchDeleteReview,
   fetchGetReviews,
+  setRating,
   setReviewToEdit,
   setShowModal,
-  setShowModalEditMode,
-  setRating
+  setShowModalEditMode
 } from "../../../redux/reducers/ReviewSlice";
 import Rate from "./Rate";
 
@@ -18,7 +18,6 @@ import Rate from "./Rate";
 export default function ReviewList({ postId }) {
   const dispatch = useDispatch();
   const { reviews, loading } = useSelector((state) => state.review);
-  const showModalEditMode = useSelector(state => state.review.showModalEditMode);
 
   const handleEditMode = (review) => {
     dispatch(setReviewToEdit(review))
@@ -26,12 +25,6 @@ export default function ReviewList({ postId }) {
     dispatch(setShowModal(false))
     dispatch(setShowModalEditMode(true));
   };
-
-  useEffect(() => {
-    if (showModalEditMode === false) {
-      dispatch(fetchGetReviews(postId))
-    }
-  }, [showModalEditMode, dispatch, postId])
 
 
   return (
@@ -61,7 +54,12 @@ export default function ReviewList({ postId }) {
               </div>
             </div>
             <div className="d-flex flex-column align-items-end justify-content-center">
-              <p><img className="w-25 rounded-circle m-2 shadow" src={review.authorId.avatar} alt="img-profile" />   {review.authorId.email}</p>
+              <div>
+                <div className=" avatarUser d-flex justify-content-end">
+                  <img width={40} height={40} className="  rounded-circle m-2 shadow" src={review.authorId.avatar} alt="img-profile" />
+                </div>   
+                <p>{review.authorId.email}</p>
+              </div>
               <div className="d-flex">
                 {review.isMine === true && <MdBuild style={{ cursor: 'pointer', fontSize: '18px', marginRight: '10px' }} onClick={() => handleEditMode(review)} />}
                 {review.isMine === true && <LuDelete style={{ cursor: 'pointer', fontSize: '22px' }} onClick={() => dispatch(fetchDeleteReview(review._id)).then(() => dispatch(fetchGetReviews(postId)))} />}
