@@ -72,29 +72,6 @@ export const fetchDelete = createAsyncThunk(
 )
 
 
-//Validation Delete
-export const fetchValidationDelete = createAsyncThunk(
-    'login/fetchValidationDelete',
-    async( value, { getState, dispatch }) => {
-        try {
-            const response = await axios.post('http://localhost:3003/validationDelete', value, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    "Authorization": "Bearer " + getState().login.userLogged.token,
-                }
-            });
-            const { data } = response;
-            console.log(data);
-            dispatch(setValidationDelate(true));
-            return data;
-        }
-        catch (error) {
-            dispatch(setValidationDelate(false));
-            console.log(error);
-        }
-    }
-)
-
 
 
 
@@ -114,9 +91,6 @@ const loginSlice = createSlice({
         logout: (state, action) => {
             localStorage.removeItem('user');
             state.userLogged = null;
-        },
-        setValidationDelate: (state, action) => {
-            state.isDeleteble = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -137,5 +111,5 @@ const loginSlice = createSlice({
 })
 
 
-export const { logout, setValidationDelate } = loginSlice.actions;
+export const { logout } = loginSlice.actions;
 export default loginSlice.reducer;

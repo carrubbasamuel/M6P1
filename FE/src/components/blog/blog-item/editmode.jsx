@@ -13,7 +13,7 @@ export default function EditMode() {
     const rating = useSelector(state => state.review.rating);
 
     useEffect(() => {
-        setComment(reviewToEdit.comment);
+        setComment(reviewToEdit && reviewToEdit.comment);
     }, [reviewToEdit])
 
 

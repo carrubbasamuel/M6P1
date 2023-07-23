@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
@@ -7,6 +7,7 @@ import { fetchLogin } from '../../redux/reducers/LoginSlice';
 import './login.css';
 
 export default function Login() {
+  const [notexist, setNotexist] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -30,7 +31,7 @@ export default function Login() {
         if (statusCode === 200) {
           navigate('/');
         } else {
-          alert('Email o Password errati');
+          setNotexist(true);
         }
       });
     } catch (error) {
@@ -45,7 +46,8 @@ export default function Login() {
           <Col md={6}>
             <div className="login-form">
               <img className='mb-5' width={150} src={logo} alt="" />
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit} >
+                {notexist && <Alert variant="danger">Email o Password errati</Alert>}
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label>Email</Form.Label>
                   <Form.Control ref={mail} type="email" placeholder="Enter email" />

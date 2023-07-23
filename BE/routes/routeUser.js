@@ -1,7 +1,11 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const fs = require('fs');
+const path = require('path');
 
 const SchemaUser = require('../models/SchemaUser');
+const SchemaPost = require('../models/SchemaPost');
+const SchemaReview = require('../models/SchemaReview');
 
 // Router
 const router = express.Router();
@@ -10,6 +14,7 @@ const router = express.Router();
 const bcrypterAuth = require('../middleware/midwareLogin');
 const validationToken = require('../middleware/middJWT');
 const { validationNewUser, validateMiddleware } = require('../middleware/midValidationExpress');
+
 
 // Login decrypting pw
 router.post('/login', bcrypterAuth, (req, res) => {
@@ -61,58 +66,53 @@ router.post('/register', validationNewUser, validateMiddleware, (req, res) => {
 });
 
 
-//Validation for delate user
-router.post('/validationDelete', validationToken, (req, res) => {
-  SchemaUser.findById(req.userId)
-    .then((response) => {
-      if (!response) {
-        return res.status(404).json({
-          message: 'User not found',
+
+
+// Delete user and related posts
+router.delete('/delete', validationToken, async (req, res) => {
+  const userId = req.userId;
+
+  try {
+
+    const delateReview = await SchemaReview.deleteMany({ authorId: userId });
+    let deletedPosts = await SchemaPost.find({ author: userId }).lean();
+    deletedPosts.forEach((post) => {
+      console.log(post.cover);
+      if (!post.cover.startsWith('http://')) {
+        const imagePath = `images/${post.cover}`;
+        fs.unlink(imagePath, (err) => {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log('Immagine eliminata con successo dopo l\'eliminazione del post.');
+          }
         });
       }
-      return bcrypt.compare(req.body.password, response.password);
-    })
-    .then((pass) => {
-      if (!pass) {
-        return res.status(401).json({
-          message: 'Authentication failed',
-        });
-      }
-      return SchemaUser.findById(req.userId);
-    })
-    .then((response) => {
-      res.status(201).json({
-        message: 'User found',
-        data: response,
-      });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        error: error.message,
-      });
     });
+
+
+    deletedPosts = await SchemaPost.deleteMany({ author: userId });
+    const deletedUser = await SchemaUser.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({
+        message: 'User not found',
+      });
+    }
+
+    res.status(201).json({
+      message: 'User and related posts deleted successfully',
+      data: { deletedUser, deletedPosts, delateReview },
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
 });
 
 
-// Delete user
-router.delete('/delete', validationToken, (req, res) => {
-  SchemaUser.findByIdAndDelete(req.userId)
-    .then((response) => {
-      if (!response) {
-        return res.status(404).json({
-          message: 'User not found',
-        });
-      }
-      res.status(201).json({
-        message: 'User deleted successfully',
-        data: response,
-      });
-    })
-    .catch((error) => {
-      res.status(500).json({
-        error: error.message,
-      });
-    });
-});
+
 
 module.exports = router;
+

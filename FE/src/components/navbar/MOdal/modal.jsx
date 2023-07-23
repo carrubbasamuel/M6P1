@@ -1,14 +1,15 @@
-import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { useSelector } from 'react-redux';
-import ModalSure from './modaSure';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchDelete } from '../../../redux/reducers/LoginSlice';
+import { useNavigate } from 'react-router-dom';
+
 
 
 export default function ModalProfile(props) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.login.userLogged)
-  const [modalSure, setModalSure] = useState(false);
-
 
   return (
     <Modal
@@ -29,12 +30,11 @@ export default function ModalProfile(props) {
             consectetur ac, vestibulum at eros.
           </p>
         </div>
-        <Button variant='danger' onClick={() => setModalSure(true)}>Delete Profile</Button>
+        <Button variant='danger' onClick={() => dispatch(fetchDelete()).then(()=> navigate('/'))}>Delete Profile</Button>
       </Modal.Body>
       <Modal.Footer>
         <Button variant='outline-light' onClick={props.onHide}>Close</Button>
       </Modal.Footer>
-      <ModalSure show={modalSure} onHide={() => setModalSure(false)} />
     </Modal>
   );
 }

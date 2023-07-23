@@ -1,10 +1,10 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { AiOutlineComment } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAddReview, fetchGetReviews, setShowModal, setRating } from '../../../redux/reducers/ReviewSlice';
+import { fetchAddReview, fetchGetReviews, setRating, setShowModal } from '../../../redux/reducers/ReviewSlice';
 import Rate from './Rate';
 
 import ReviewList from './ReviewList';
