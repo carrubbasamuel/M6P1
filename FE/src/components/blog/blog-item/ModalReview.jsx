@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import { AiOutlineComment } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { fetchAddReview, fetchGetReviews } from '../../../redux/reducers/ReviewSlice';
+import Rate from './Rate';
 
 import ReviewList from './ReviewList';
 
@@ -12,63 +13,63 @@ import ReviewList from './ReviewList';
 function ModalReview(props) {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
+  const [rating, setRating] = useState(0 || props.rate);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setRating(0);
+    setShow(false)
+  };
+
   const handleShow = () => {
     setShow(true);
     dispatch(fetchGetReviews(props.postId));
   };
 
-  const rate = useRef(0);
   const comment = useRef('');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
 
     const data = {
-      rate: rate.current.value,
+      rate: rating,
       comment: comment.current.value,
       postId: props.postId
     }
 
-    dispatch(fetchAddReview(data)).then(dispatch(fetchGetReviews(props.postId)));
+    await dispatch(fetchAddReview(data)).then(()=>{
+      setRating(0);
+      comment.current.value = '';
+       dispatch(fetchGetReviews(props.postId))
+    });
   }
 
 
   return (
-    <>
-      <AiOutlineComment onClick={handleShow} style={{ cursor: 'pointer' }} />
 
-      <Modal show={show} onHide={handleClose}>
+
+    <div>
+      <AiOutlineComment onClick={handleShow} style={{ cursor: 'pointer' }} />
+      <Modal size='lg' show={show} onHide={handleClose}>
         <Modal.Header>
           <Modal.Title>Add your Review</Modal.Title>
         </Modal.Header>
 
-        <ReviewList />
-        <Form.Group controlId="exampleForm.ControlSelect1">
-          <Form.Label>Rating</Form.Label>
-          <Form.Control as="select" ref={rate}>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-          </Form.Control>
+        <ReviewList postId={props.postId} setRating={setRating} />
+
+        <Form.Group className='p-2' controlId="exampleForm.ControlTextarea1">
+          <Form.Label>Add a comment</Form.Label>
+          <Form.Control as="textarea" rows={3} ref={comment} />
         </Form.Group>
-        <div className='d-flex '>
-
-          <Form.Group controlId="exampleForm.ControlTextarea1">
-            <Form.Label>Comment</Form.Label>
-            <Form.Control as="textarea" rows={3} ref={comment} />
-          </Form.Group>
-          <Button className='m-3' onClick={handleSubmit}>Add</Button>
+        <div className='mt-2 p-3 d-flex flex-column align-items-center ' >
+          <Rate rating={rating} setRating={setRating} />
         </div>
-
-
-        <Modal.Footer>
+        <Modal.Footer className='mt-2'>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
+          <Button variant='success' onClick={handleSubmit}>Add</Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 }
 

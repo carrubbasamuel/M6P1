@@ -21,9 +21,9 @@ const BlogItem = ({ posts }) => {
       <Card.Body as={Link} to={`/blog/${_id}`}>
         <Card.Title>{title}</Card.Title>
       </Card.Body>
-      <Card.Footer className="d-flex justify-content-between align-items-">
+      <Card.Footer className="d-flex justify-content-between align-items-center">
         <BlogAuthor {...author} />
-        <div className="align-self-end fs-3">
+        <div className="d-flex align-items-center justify-content-center fs-4">
         <ModalReview postId={_id} />
         {location.pathname === "/dashboard"
           && <TiDocumentDelete onClick={() => dispatch(fetchDeletePost(_id)).then(()=> dispatch(fetchMyPosts()))} style={{ cursor: 'pointer' }} />}

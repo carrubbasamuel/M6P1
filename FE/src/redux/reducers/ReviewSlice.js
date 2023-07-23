@@ -35,6 +35,25 @@ export const fetchGetReviews = createAsyncThunk(
     }
 );
 
+export const fetchDeleteReview = createAsyncThunk(
+    'review/fetchDeleteReview',
+    async (reviewId, { getState }) => {
+        const token = getState().login.userLogged.token;
+        try {
+            const response = await axios.delete(`http://localhost:3003/deleteReview/${reviewId}`,{
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            return response.data;
+        } catch (error) {
+            throw Error('Failed to delete review.');
+        }
+    }
+);
+
+
 
 
 const initialState = {

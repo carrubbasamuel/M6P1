@@ -37,7 +37,7 @@
 
 .modal-content{
   color: white;
-  background-color: rgba(33, 156, 51, 0.225);
+  background-color: rgba(228, 250, 232, 0.225);
   backdrop-filter: blur(40px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
