@@ -13,6 +13,10 @@ const router = express.Router();
 const bcrypterAuth = require('../middleware/midwareLogin');
 const validationToken = require('../middleware/middJWT');
 const { validationNewUser, validateMiddleware } = require('../middleware/midValidationExpress');
+const {sendMail, template} = require('../middleware/midNodemailer');
+
+
+
 
 
 // Login decrypting pw
@@ -53,9 +57,22 @@ router.post('/register', validationNewUser, validateMiddleware, (req, res) => {
       return user.save();
     })
     .then(() => {
+      // Send email
+      const data = { username: req.body.name };
+      const emailcontent = template(data);
+
+      const mailOptions = {
+        from: 'StriveBlog@ethereal.email', // Mittente
+        to: req.body.email, // Destinatario
+        subject: '🎉 Welcome to Strive Blog 🚀', // Oggetto dell'email
+        html: emailcontent, // Contenuto dell'email
+      };
+
+      sendMail(mailOptions);
+
       res.status(201).json({
         message: 'User added successfully',
-      });
+      });  
     })
     .catch((error) => {
       res.status(500).json({

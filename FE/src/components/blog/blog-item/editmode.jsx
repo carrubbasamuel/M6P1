@@ -30,9 +30,10 @@ export default function EditMode() {
       rate: rating,
       comment: comment,
     };
-    dispatch(fetchEditReview(data));
-    handleClose();
+     dispatch(fetchEditReview(data)).then(() => console.log('update') );
+     handleClose()
   };
+
 
   const isOpen = show === reviewToEdit?._id; // Usa la variabile 'show' per controllare la visualizzazione del modale
 

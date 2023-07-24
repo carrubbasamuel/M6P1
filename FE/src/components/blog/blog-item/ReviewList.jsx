@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { LuDelete } from "react-icons/lu";
 import { MdBuild } from "react-icons/md";
 import Lottie from "react-lottie";
@@ -25,6 +25,11 @@ export default function ReviewList({ postId }) {
     dispatch(setShowModal(false))
     dispatch(setShowModalEditMode(review._id));
   };
+
+
+  useEffect(() => {
+    dispatch(fetchGetReviews(postId));
+  }, [dispatch, postId]);
 
 
   return (

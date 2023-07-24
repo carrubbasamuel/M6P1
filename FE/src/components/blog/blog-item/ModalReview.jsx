@@ -27,7 +27,7 @@ function ModalReview(props) {
 
   const comment = useRef('');
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
 
     const data = {
       rate: rating,
@@ -35,12 +35,14 @@ function ModalReview(props) {
       postId: props.postId
     }
 
-    await dispatch(fetchAddReview(data)).then(()=>{
+     dispatch(fetchAddReview(data)).then(()=>{
       setRating(0);
       comment.current.value = '';
-       dispatch(fetchGetReviews(props.postId))
+       dispatch(fetchGetReviews(props.postId)).then(()=> console.log('done'));
     });
   }
+
+
 
   const isOpen = showModal === props.postId;//unique id for unique modal
 

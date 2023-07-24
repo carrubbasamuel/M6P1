@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require("path");
 
 
 
@@ -37,7 +38,6 @@ const validationToken = require("./middleware/middJWT.js");
 
 
 // routes
-app.use("/images", express.static("images"));
 app.use("/", User);
 app.use("/", Resource);
 app.use("/", Review);
