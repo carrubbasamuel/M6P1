@@ -1,7 +1,9 @@
 const express = require('express');
 const mongo = require('mongoose');
 const SchemaPost = require('../models/SchemaPost');
-const { validateMiddleware, validationNewPost } = require('../middleware/midValidationExpress');
+
+const { validateMiddleware, validationNewPost } = require('../middleware/midValidationExpress');//midValidationExpress validazione post
+const checkFilePresence = require('../middleware/midCheckFilePresence');// midCheckFilePresence verifica presenza file o URL sulla rotta posted
 
 
 const router = express.Router();
@@ -46,9 +48,9 @@ router.get('/posts', (req, res) => {
 });
 
 
-// New Post
-const checkFilePresence = require('../middleware/midCheckFilePresence');
 
+
+// New Post
 router.post('/posted', checkFilePresence, validationNewPost, validateMiddleware, (req, res) => {
   const cover = req.file ? req.file.secure_url : undefined;
   const newPost = new SchemaPost({

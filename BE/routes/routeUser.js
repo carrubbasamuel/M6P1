@@ -9,13 +9,11 @@ const SchemaReview = require('../models/SchemaReview');
 // Router
 const router = express.Router();
 
-// Middleware Login
-const bcrypterAuth = require('../middleware/midwareLogin');
-const validationToken = require('../middleware/middJWT');
+
+const bcrypterAuth = require('../middleware/midAuthLogin');
+const { verifyToken } = require('../middleware/midJWT');
 const { validationNewUser, validateMiddleware } = require('../middleware/midValidationExpress');
-const {sendMail, template} = require('../middleware/midNodemailer');
-
-
+const { sendMail, template } = require('../middleware/midNodemailer');
 
 
 
@@ -44,6 +42,7 @@ router.post('/login', bcrypterAuth, (req, res) => {
     });
   }
 });
+
 
 // When register crypting pw
 router.post('/register', validationNewUser, validateMiddleware, (req, res) => {
@@ -84,16 +83,14 @@ router.post('/register', validationNewUser, validateMiddleware, (req, res) => {
 
 
 
-// Delete user and related posts
-router.delete('/delete', validationToken, async (req, res) => {
+// Delete user and related posts and reviews
+router.delete('/delete', verifyToken, async (req, res) => {
   const userId = req.userId;
 
   try {
 
     const delateReview = await SchemaReview.deleteMany({ authorId: userId });
-    deletedPosts = await SchemaPost.deleteMany({ author: userId });
-
-
+    const deletedPosts = await SchemaPost.deleteMany({ author: userId });
     const deletedUser = await SchemaUser.findByIdAndDelete(userId);
 
     if (!deletedUser) {

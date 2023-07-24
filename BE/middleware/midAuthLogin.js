@@ -1,17 +1,9 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const SchemaUser = require('../models/SchemaUser');
+const { generateToken } = require('./midJWT');
 
-const generateToken = (user) => {
-  const jwtSecretKey = process.env.KEY_JWT; // Sostituisci con una chiave segreta sicura
-  const token = jwt.sign({
-    userId: user._id,
-    email: user.email
-  }, jwtSecretKey, {
-    expiresIn: '5h', // Scadenza del token (5 ore)
-  });
-  return token;
-};
+
 
 
 const bcrypterAuth = async (req, res, next) => {
@@ -30,9 +22,8 @@ const bcrypterAuth = async (req, res, next) => {
       return res.status(401).send({ statusCode: 401, message: 'Authentication failed' });
     }
 
-    const token = generateToken(user);// Genera il JWT e invialo al client come parte della risposta
+    const token = generateToken(user);
 
-    // Includi il token nella risposta
     req.token = token;
     req.user = {
       email: user.email,

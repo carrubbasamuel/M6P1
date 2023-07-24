@@ -1,11 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const verifyToken = require('../middleware/middJWT');
 const router = express.Router();
 const Review = require('../models/SchemaReview');
 
-
-router.post('/addReview', verifyToken, (req, res) => {
+// Create a review
+router.post('/addReview', (req, res) => {
     const { comment, rate, postId } = req.body;
     const newReview = new Review({
         comment,
@@ -22,31 +21,30 @@ router.post('/addReview', verifyToken, (req, res) => {
         })
 });
 
+// Get all reviews
+router.get('/getReviews/:postId', (req, res) => {
+  const { postId } = req.params;
+  const { userId } = req;
 
+  Review.find({ postId })
+    .populate('authorId', 'email name surname avatar')
+    .lean()
+    .then((reviews) => {
+      // Aggiungi il campo isMine a ciascuna recensione se l'utente corrente è l'autore
+      reviews.forEach((review) => {
+        review.isMine = review.authorId._id.toString() === userId.toString();
+      });
 
-
-
-router.get('/getReviews/:postId', verifyToken, async (req, res) => {
-    const { postId } = req.params;
-    const { userId } = req;
-    try {
-        const reviews = await Review.find({ postId })
-            .populate('authorId', 'email name surname avatar')
-            .lean();
-
-        // Aggiungi il campo isMine a ciascuna recensione
-        reviews.forEach(review => {
-            review.isMine = review.authorId._id.toString() === userId.toString();
-        });
-
-
-        res.json(reviews);
-    } catch (err) {
-        res.json(err);
-    }
+      res.json(reviews);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
 
-router.delete('/deleteReview/:reviewId', verifyToken, (req, res) => {
+
+// Delete a review
+router.delete('/deleteReview/:reviewId', (req, res) => {
     const { reviewId } = req.params;
     Review.findByIdAndDelete(reviewId)
         .then(review => {
@@ -71,7 +69,9 @@ router.delete('/deleteReview/:reviewId', verifyToken, (req, res) => {
         });
 });
 
-router.patch('/editReview/:reviewId', verifyToken, (req, res) => {
+
+// Edit a review
+router.patch('/editReview/:reviewId', (req, res) => {
     const { reviewId } = req.params;
     const { comment, rate } = req.body;
     Review.findByIdAndUpdate(reviewId, { comment, rate }, { new: true })
@@ -96,13 +96,6 @@ router.patch('/editReview/:reviewId', verifyToken, (req, res) => {
             });
         });
 });
-
-
-
-
-
-
-
 
 
 
