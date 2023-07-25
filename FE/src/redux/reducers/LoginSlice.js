@@ -78,6 +78,7 @@ export const fetchDelete = createAsyncThunk(
 
 const initialState = {
     userLogged: JSON.parse(localStorage.getItem('user')) || null,
+    codeRegister: null,
     isDeleteble: false,
     loading: false,
     error: null
@@ -91,6 +92,9 @@ const loginSlice = createSlice({
         logout: (state, action) => {
             localStorage.removeItem('user');
             state.userLogged = null;
+        },
+        setCodeRegister: (state, action) => {
+            state.codeRegister = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -107,9 +111,20 @@ const loginSlice = createSlice({
                 state.error = action.error.message;
                 state.loading = false;
             })
+            .addCase(fetchRegister.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(fetchRegister.fulfilled, (state, action) => {
+                state.codeRegister = action.payload;
+                state.loading = false;
+            })
+            .addCase(fetchRegister.rejected, (state, action) => {
+                state.error = action.error.message;
+                state.loading = false;
+            })
     }
 })
 
 
-export const { logout } = loginSlice.actions;
+export const { logout, setCodeRegister } = loginSlice.actions;
 export default loginSlice.reducer;

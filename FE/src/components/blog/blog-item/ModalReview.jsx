@@ -35,11 +35,10 @@ function ModalReview(props) {
       postId: props.postId
     }
 
-     dispatch(fetchAddReview(data)).then( async ()=>{
+     dispatch(fetchAddReview(data)).then(()=>{
       dispatch(setRating(0));
       comment.current.value = '';
-      await dispatch(fetchGetReviews(props.postId))
-    });
+    }).then(()=>dispatch(fetchGetReviews(props.postId)));
   }
 
 

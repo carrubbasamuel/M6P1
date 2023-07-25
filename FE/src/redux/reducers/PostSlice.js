@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { logout } from "./LoginSlice";
 
+
+
 export const fetchAuthors = createAsyncThunk(
     'authors/fetchAuthors',
     async (currentPage, { getState, dispatch }) => {
@@ -143,6 +145,24 @@ const PostSlice = createSlice({
             .addCase(fetchMyPosts.rejected, (state, action) => {
                 state.data = [];
                 state.error = action.error.message;
+                state.loading = false;
+            })
+            .addCase(fetchDeletePost.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(fetchDeletePost.fulfilled, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(fetchDeletePost.rejected, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(fetchNewPost.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(fetchNewPost.fulfilled, (state, action) => {
+                state.loading = false;
+            })
+            .addCase(fetchNewPost.rejected, (state, action) => {
                 state.loading = false;
             })
     }

@@ -28,7 +28,6 @@ export default function Register() {
             avatar: avatar.current.value
         }
         
-        console.log(formData);
         dispatch(fetchRegister(formData));
         navigate("/")
     }

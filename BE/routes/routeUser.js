@@ -56,12 +56,12 @@ router.post('/register', validationNewUser, validateMiddleware, (req, res) => {
       return user.save();
     })
     .then(() => {
-      // Send email
+      // Send email whit mailgun
       const data = { username: req.body.name };
       const emailcontent = template(data);
 
       const mailOptions = {
-        from: 'StriveBlog@ethereal.email', // Mittente
+        from: 'StriveBlog@estriveschool.email', // Mittente
         to: req.body.email, // Destinatario
         subject: '🎉 Welcome to Strive Blog 🚀', // Oggetto dell'email
         html: emailcontent, // Contenuto dell'email
@@ -74,9 +74,16 @@ router.post('/register', validationNewUser, validateMiddleware, (req, res) => {
       });  
     })
     .catch((error) => {
-      res.status(500).json({
-        error: error,
-      });
+      if (error.code === 11000) {
+        res.status(409).json({
+          statusCode: 409,
+          error: 'Email already exists',
+        });
+      }else{
+        res.status(500).json({
+          error: error,
+        });
+      }
     });
 });
 

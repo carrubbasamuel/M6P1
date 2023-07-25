@@ -1,4 +1,5 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
+import { Spinner } from "react-bootstrap";
 import { LuDelete } from "react-icons/lu";
 import { MdBuild } from "react-icons/md";
 import Lottie from "react-lottie";
@@ -34,8 +35,8 @@ export default function ReviewList({ postId }) {
 
   return (
     <>
-      {loading && reviews.length === 0 && <div>Loading...</div>}
-      {reviews.length === 0 &&
+      {loading && reviews.length === 0 && <div className="d-flex justify-content-center mt-5"><Spinner animation="grow" variant="dark" /></div>}
+      {loading === false && reviews.length === 0 &&
         <div className="d-flex flex-column align-items-center mt-3">
           <h2>No reviews yet</h2>
           <p>Be the first to review this post</p>

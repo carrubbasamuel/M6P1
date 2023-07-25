@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { MdDangerous } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-import { fetchLogin } from '../../redux/reducers/LoginSlice';
+import { fetchLogin, setCodeRegister } from '../../redux/reducers/LoginSlice';
 import './login.css';
 
 export default function Login() {
   const [notexist, setNotexist] = useState(false);
+  const { codeRegister } = useSelector((state) => state.login);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -18,10 +21,11 @@ export default function Login() {
     window.scrollTo(0, 0);
   }, []);
 
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
+      dispatch(setCodeRegister(null));
       const user = {
         email: mail.current.value,
         password: password.current.value
@@ -32,11 +36,15 @@ export default function Login() {
           navigate('/');
         } else {
           setNotexist(true);
+          setTimeout(() => {
+            setNotexist(false);
+          }, 5000);
         }
       });
     } catch (error) {
       console.log(error);
     }
+    
   };
 
   return (
@@ -47,7 +55,8 @@ export default function Login() {
             <div className="login-form">
               <img className='mb-5' width={150} src={logo} alt="" />
               <Form onSubmit={handleSubmit} >
-                {notexist && <Alert variant="danger">Email o Password errati</Alert>}
+                {codeRegister?.statusCode === 409 && <Alert variant="danger" className='alertlogin'><MdDangerous  className='me-2'/>    You have al ready an account whit this email!</Alert>}
+                {notexist && <Alert variant="danger" className='alertlogin'><MdDangerous  className='me-2' />      Email or Password not correct</Alert>}
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label>Email</Form.Label>
                   <Form.Control ref={mail} type="email" placeholder="Enter email" />

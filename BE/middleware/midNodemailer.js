@@ -7,33 +7,28 @@ const HTMLpath = path.join(__dirname, '../templetes/templateRegister.hbs');
 
 const readHTMLFile = fs.readFileSync(HTMLpath, "utf8");
 const template = handlebars.compile(readHTMLFile);
+const mailgunTransport = require('nodemailer-mailgun-transport');
 
 
 
-const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS,
-    }
-});
+const transporter = nodemailer.createTransport(mailgunTransport({
+  auth: {
+    api_key: process.env.API_KEY, 
+    domain: process.env.DOMAIN
+  }
+}));
+
 
 
 const sendMail = (mailOptions) => {
     transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
-            res.status(500).send({
-                statusCode: 500,
-                message: 'Internal server error',
-                error,
-            });
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(`Email sent: ${info}`);
+      }
     });
-}
+  };
 
 
 module.exports = {

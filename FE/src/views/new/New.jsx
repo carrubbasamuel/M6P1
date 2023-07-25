@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import "react-quill/dist/quill.snow.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { fetchNewPost } from "../../redux/reducers/PostSlice";
 import "./styles.css";
@@ -11,6 +12,7 @@ import "./styles.css";
 const NewBlogPost = props => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.author);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -102,7 +104,7 @@ const NewBlogPost = props => {
                 marginLeft: "1em",
               }}
             >
-              Invia
+              {loading ? <Spinner animation="border" variant="light" /> : "Submit"}
             </Button>
           </Form.Group>
         </Form>

@@ -20,8 +20,8 @@ export default function EditMode() {
 
   const handleClose = () => {
     dispatch(setRating(0));
-    dispatch(setShowModalEditMode(null)); // Chiudi il modale di editing
-    dispatch(setShowModal(reviewToEdit && reviewToEdit.postId)); // Riapri il modale di visualizzazione
+    dispatch(setShowModalEditMode(null));
+    dispatch(setShowModal(reviewToEdit && reviewToEdit.postId)); 
   };
 
   const handleSubmit = () => {
@@ -30,12 +30,12 @@ export default function EditMode() {
       rate: rating,
       comment: comment,
     };
-     dispatch(fetchEditReview(data)).then(() => console.log('update') );
-     handleClose()
+     dispatch(fetchEditReview(data)).then(() => handleClose() );
+     
   };
 
 
-  const isOpen = show === reviewToEdit?._id; // Usa la variabile 'show' per controllare la visualizzazione del modale
+  const isOpen = show === reviewToEdit?._id;
 
   return (
     <>
