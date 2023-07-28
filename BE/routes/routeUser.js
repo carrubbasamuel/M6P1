@@ -14,6 +14,7 @@ const bcrypterAuth = require('../middleware/midAuthLogin');
 const { verifyToken } = require('../middleware/midJWT');
 const { validationNewUser, validateMiddleware } = require('../middleware/midValidationExpress');
 const { sendMail, template } = require('../middleware/midNodemailer');
+const checkFilePresence = require('../middleware/midCheckFilePresence');
 
 
 
@@ -116,6 +117,40 @@ router.delete('/delete', verifyToken, async (req, res) => {
     });
   }
 });
+
+
+
+// Update user avatar
+router.patch('/updateAvatar', checkFilePresence('avatar'), verifyToken, async (req, res) => {
+  const userId = req.userId;
+  const avatar = req.file?.secure_url;
+  SchemaUser.findOne({ _id: userId }).then((user) => {
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found',
+      });
+    }
+    SchemaUser.findByIdAndUpdate(userId, { avatar }, { new: true })
+      .then((user) => {
+        res.status(201).json({
+          statusCode: 201,
+          message: 'User avatar updated successfully',
+          user: {
+            email: user.email,
+            name: user.name,
+            surname: user.surname,
+            avatar: user.avatar,
+          },
+        });
+      })
+      .catch((error) => {
+        res.status(500).json({
+          error: error.message,
+        });
+      });
+  });
+});
+
 
 
 

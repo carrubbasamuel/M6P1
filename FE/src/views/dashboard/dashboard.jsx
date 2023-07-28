@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import BlogList from "../../components/blog/blog-list/BlogList";
+import ProfileDash from "../../components/profiledash/profiledash";
 import { fetchMyPosts } from "../../redux/reducers/PostSlice";
 import "./style.css";
 
@@ -21,6 +22,7 @@ export default function Dashboard() {
 
     return (
         <Container className="dash">
+            <ProfileDash />
             <BlogList posts={author}/>
         </Container>
     );

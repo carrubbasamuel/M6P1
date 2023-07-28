@@ -71,6 +71,30 @@ export const fetchDelete = createAsyncThunk(
     }
 )
 
+//*PATCH to update the avatar user
+export const fetchUpdateAvatar = createAsyncThunk(
+    'login/fetchUpdateAvatar',
+    async (file, { getState }) => {
+        try {
+            const formData = new FormData();
+            formData.append('avatar', file);
+
+            const response = await axios.patch('http://localhost:3003/updateAvatar', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': 'Bearer ' + getState().login.userLogged.token
+                }
+            });
+            const { data } = response;
+            console.log(data);
+            return data;
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+)
+
 
 
 
@@ -119,6 +143,29 @@ const loginSlice = createSlice({
                 state.loading = false;
             })
             .addCase(fetchRegister.rejected, (state, action) => {
+                state.error = action.error.message;
+                state.loading = false;
+            })
+            .addCase(fetchDelete.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(fetchDelete.fulfilled, (state, action) => {
+                state.isDeleteble = true;
+                state.loading = false;
+            })
+            .addCase(fetchDelete.rejected, (state, action) => {
+                state.error = action.error.message;
+                state.loading = false;
+            })
+            .addCase(fetchUpdateAvatar.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(fetchUpdateAvatar.fulfilled, (state, action) => {
+                state.userLogged.user = action.payload.user;
+                localStorage.setItem('user', JSON.stringify(state.userLogged));
+                state.loading = false;
+            })
+            .addCase(fetchUpdateAvatar.rejected, (state, action) => {
                 state.error = action.error.message;
                 state.loading = false;
             })

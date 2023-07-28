@@ -1,0 +1,21 @@
+.changeprofile{
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    bottom: 0;
+    right: 200px;
+    width: 50px;
+    border: 1px solid rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.changeprofile:hover{
+    transform: scale(1.02);
+}
+
+.imgdash{
+    object-fit: cover;
+}

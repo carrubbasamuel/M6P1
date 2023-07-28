@@ -30,7 +30,6 @@ export const fetchAuthors = createAsyncThunk(
 export const fetchNewPost = createAsyncThunk(
     'authors/fetchNewPost',
     async (post, { getState }) => {
-        console.log(post);
         const formData = new FormData();
         formData.append('title', post.title);
         formData.append('category', post.category);
