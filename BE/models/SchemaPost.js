@@ -25,6 +25,10 @@ const SchemaPost = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
+    howSave: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }]
 },{ timestamps: true, strict: true });
 
 module.exports = mongoose.model('Post', SchemaPost, 'posts');

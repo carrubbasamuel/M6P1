@@ -1,7 +1,8 @@
 import { Col, Container, Row } from "react-bootstrap";
 import Lottie from "react-lottie";
+import { Fade } from "react-reveal";
 import animation from "./animationLottie.json";
-import "./header.css"
+import "./header.css";
 
 
 export default function Header({name}) {
@@ -19,11 +20,15 @@ export default function Header({name}) {
         <Container id="header" className="mt-5 mb-5">
             <Row>
             <Col className="p-0">
+                <Fade left duration={900}>
                     <Lottie options={lottieOptions} width={500} />
+                </Fade>
                 </Col>
                 <Col className="d-flex flex-column align-items-center justify-content-center blog-main-title mb-3">
+                    <Fade right duration={900}>
                     <h1 className="display-1 text-start">Walcome on Strive Blog {name}!</h1>
                     <p className="display-6 m-4"><span className="text-success">Explore our blog </span>A World of Discoveries and Inspiration!</p>
+                    </Fade>
                 </Col>
             </Row>
         </Container>

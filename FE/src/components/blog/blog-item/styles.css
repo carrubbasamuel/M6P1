@@ -48,3 +48,18 @@
   background: #555;
 }
 
+.mark{
+  background-color: transparent!important;
+  
+  top:-35px;
+  left: 10px;
+  font-size: 50px
+}
+
+.mark svg{
+  fill: rgba(60, 53, 53, 0.325);
+}
+
+.mark:hover svg{
+  fill: rgb(0, 0, 0)!important;
+}

@@ -4,6 +4,7 @@ const SchemaPost = require('../models/SchemaPost');
 
 const { validateMiddleware, validationNewPost } = require('../middleware/midValidationExpress');//midValidationExpress validazione post
 const checkFilePresence = require('../middleware/midCheckFilePresence');// midCheckFilePresence verifica presenza file o URL sulla rotta posted
+const  controllerPosts  = require('../middleware/midControllPosts');//midControllPosts controlla se il post è salvato o meno dall'utente loggato
 
 
 const router = express.Router();
@@ -11,47 +12,51 @@ const router = express.Router();
 
 
 
-// Get all posts
-router.get('/posts', (req, res) => {
+router.get('/posts', async (req, res) => {
   const { page = 1, itemForPage = 9 } = req.query;
 
-  SchemaPost.find()
-    .populate({
-      path: 'author',
-      select: 'name surname avatar',
-    })
-    .limit(itemForPage)
-    .skip((page - 1) * itemForPage)
-    .sort({ createdAt: -1 })
-    .then((posts) => {
-      if (posts.length === 0) {
-        return res.status(404).json({
-          statusCode: 404,
-          message: 'No posts found!',
-        });
-      }
+  try {
+    const totalPostsCount = await SchemaPost.countDocuments();
+    const allPosts = await SchemaPost.find()
+      .populate({
+        path: 'author',
+        select: 'name surname avatar',
+      })
+      .limit(itemForPage)
+      .skip((page - 1) * itemForPage)
+      .sort({ createdAt: -1 });
 
-      res.status(200).json({
-        statusCode: 200,
-        message: 'Posts retrieved successfully',
-        posts,
-        pagination: Math.ceil(SchemaPost.countDocuments() / itemForPage),
+    if (allPosts.length === 0) {
+      return res.status(404).json({
+        statusCode: 404,
+        message: 'No posts found!',
       });
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({
-        statusCode: 500,
-        message: 'Internal server error',
-      });
+    }
+
+    const posts = controllerPosts(allPosts, req);
+
+    res.status(200).json({
+      statusCode: 200,
+      message: 'Posts retrieved successfully',
+      posts,
+      pagination: Math.ceil(totalPostsCount / itemForPage),
     });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      statusCode: 500,
+      message: 'Internal server error',
+    });
+  }
 });
 
 
 
 
+
+
 // New Post
-router.post('/posted', checkFilePresence, validationNewPost, validateMiddleware, (req, res) => {
+router.post('/posted', checkFilePresence('coverImg'), validationNewPost, validateMiddleware, (req, res) => {
   const cover = req.file ? req.file.secure_url : undefined;
   const newPost = new SchemaPost({
     title: req.body.title,
@@ -94,13 +99,15 @@ router.get('/MyPosts', (req, res) => {
       path: 'author',
       select: 'name surname avatar',
     })
-    .then((posts) => {
-      if (posts.length === 0) {
+    .then((allPosts) => {
+      if (allPosts.length === 0) {
         return res.status(404).json({
           statusCode: 404,
           message: 'No posts found!',
         });
       }
+
+      const posts = controllerPosts(allPosts, req);
 
       res.status(200).json({
         statusCode: 200,
@@ -143,6 +150,95 @@ router.delete('/delete/:id', (req, res) => {
       });
     });
 });
+
+
+//Save a post 
+router.patch('/save/:id', (req, res) => {
+  const { id } = req.params;
+  SchemaPost.findByIdAndUpdate(id, { $push: { howSave: req.userId } }, { new: true })
+    .then((post) => {
+      if (!post) {
+        return res.status(404).json({
+          statusCode: 404,
+          message: 'Post not found!',
+        });
+      }
+      res.status(200).json({
+        statusCode: 200,
+        message: 'Post saved successfully',
+        post,
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({
+        statusCode: 500,
+        message: 'Internal server error',
+      });
+    });
+});
+
+
+
+//Unsave a post
+router.patch('/unsave/:id', (req, res) => {
+  const { id } = req.params;
+  SchemaPost.findByIdAndUpdate(id, { $pull: { howSave: req.userId } }, { new: true })
+    .then((post) => {
+      if (!post) {
+        return res.status(404).json({
+          statusCode: 404,
+          message: 'Post not found!',
+        });
+      }
+      res.status(200).json({
+        statusCode: 200,
+        message: 'Post unsaved successfully',
+        post,
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({
+        statusCode: 500,
+        message: 'Internal server error',
+      });
+    });
+});
+
+//Get saved posts
+router.get('/saved', (req, res) => {
+  SchemaPost.find({ howSave: req.userId })
+    .populate({
+      path: 'author',
+      select: 'name surname avatar',
+    })
+    .then((allPosts) => {
+      if (allPosts.length === 0) {
+        return res.status(404).json({
+          statusCode: 404,
+          message: 'No posts found!',
+        });
+      }
+
+      const posts = controllerPosts(allPosts, req);
+
+      res.status(200).json({
+        statusCode: 200,
+        message: 'Posts retrieved successfully',
+        posts,
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({
+        statusCode: 500,
+        message: 'Internal server error',
+      });
+    });
+});
+
+
 
 
 module.exports = router;

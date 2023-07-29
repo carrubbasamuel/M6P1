@@ -16,7 +16,8 @@ export const fetchAuthors = createAsyncThunk(
                     "Authorization": "Bearer " + ApiKey,
                 },
             });
-            const { data } = response; // Utilizza data destructuring per estrarre i dati dal response object
+            const { data } = response; 
+            console.log(data);
             return data;
         } catch (error) {
             if (error.response.status === 401) dispatch(logout());
@@ -102,9 +103,78 @@ export const fetchDeletePost = createAsyncThunk(
     }
 )
 
+export const fetchSavePost = createAsyncThunk(
+    'authors/fetchSavePost',
+    async (id, { getState }) => {
+        try {
+            const user = getState().login.userLogged;
+            const { token } = user;
+            const response = await axios.patch(`http://localhost:3003/save/${id}`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const { data } = response;
+            return data;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+)
+
+
+export const fetchUnsavePost = createAsyncThunk(
+    'authors/fetchUnsavePost',
+    async (id, { getState }) => {
+        try {
+            const user = getState().login.userLogged;
+            const { token } = user;
+            const response = await axios.patch(`http://localhost:3003/unsave/${id}`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const { data } = response;
+            return data;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+)
+
+
+export const fetchSavedPosts = createAsyncThunk(
+    'authors/fetchSavedPosts',
+    async (_, { getState }) => {
+        try {
+            const user = getState().login.userLogged;
+            const { token } = user;
+            const response = await axios.get('http://localhost:3003/saved', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const { data } = response;
+            console.log(data);
+            return data;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+)
+
+
+
 
 const initialState = {
     data: [],
+    saved: [],
     loading: false,
     error: null,
     tokenValidation: null,
@@ -163,6 +233,18 @@ const PostSlice = createSlice({
             })
             .addCase(fetchNewPost.rejected, (state, action) => {
                 state.loading = false;
+            })
+            .addCase(fetchSavedPosts.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(fetchSavedPosts.fulfilled, (state, action) => {
+                state.loading = false;
+                state.saved = action.payload.posts;
+            }
+            )
+            .addCase(fetchSavedPosts.rejected, (state, action) => {
+                state.loading = false;
+                state.saved = [];
             })
     }
 })
