@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { Container, Tab, Tabs } from "react-bootstrap";
+import { BiSolidDashboard } from "react-icons/bi";
+import { BsFillBookmarksFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import BlogList from "../../components/blog/blog-list/BlogList";
 import ProfileDash from "../../components/profiledash/profiledash";
@@ -31,10 +33,10 @@ export default function Dashboard() {
                 className="mb-3 text-dark"
                 fill
             >
-                <Tab eventKey="dashboard" title="DashBoard" >
+                <Tab eventKey="dashboard" title={<BiSolidDashboard fontSize={30} color="black" />} >
                     <BlogList posts={author} />
                 </Tab>
-                <Tab eventKey="saved" title="Saved Posts" onEnter={()=> dispatch(fetchSavedPosts())}>
+                <Tab eventKey="saved" title={<BsFillBookmarksFill fontSize={30} color="black"/>} onEnter={()=> dispatch(fetchSavedPosts())}>
                     <BlogList posts={saved} saveZone={true} />
                 </Tab>
             </Tabs>

@@ -8,7 +8,7 @@ export default function PaginationPosts() {
   const dispatch = useDispatch();
   const totalPage = useSelector((state) => state.author.totalPage);
 
-  // Memoize the pagination value to avoid unnecessary calculations on every render
+  
   const pagination = useMemo(() => totalPage, [totalPage]);
 
   const clickHandler = (e) => {
@@ -19,7 +19,6 @@ export default function PaginationPosts() {
   };
 
   useEffect(() => {
-    // Ensure the currentPage is within valid bounds before dispatching the action
     if (currentPage >= 1 && currentPage <= pagination) {
       dispatch(fetchAuthors(currentPage));
     }
@@ -32,7 +31,7 @@ export default function PaginationPosts() {
       />
 
       {Array.from({ length: pagination }, (_, i) => (
-        <Pagination.Item key={i} active={i + 1 === currentPage} onClick={clickHandler}>
+        <Pagination.Item key={i} active={i + 1 === currentPage}  onClick={clickHandler}>
           {i + 1}
         </Pagination.Item>
       ))}

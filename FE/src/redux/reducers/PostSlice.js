@@ -169,6 +169,52 @@ export const fetchSavedPosts = createAsyncThunk(
     }
 )
 
+//fetch for like
+export const fetchLike = createAsyncThunk(
+    'authors/fetchLike',
+    async (id, { getState }) => {
+        try {
+            const user = getState().login.userLogged;
+            const { token } = user;
+            const response = await axios.patch(`http://localhost:3003/like/${id}`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const { data } = response;
+            return data;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+)
+
+
+//fetch for unlike
+export const fetchUnlike = createAsyncThunk(
+    'authors/fetchUnlike',
+    async (id, { getState }) => {
+        try {
+            const user = getState().login.userLogged;
+            const { token } = user;
+            const response = await axios.patch(`http://localhost:3003/unlike/${id}`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const { data } = response;
+            return data;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+)
+
+
 
 
 

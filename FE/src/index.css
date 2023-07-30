@@ -5,3 +5,13 @@ body {
 .sr-only{
   display: none;
 }
+
+.pagination{
+    --bs-pagination-active-color: none;
+    --bs-pagination-active-bg: none;
+    --bs-pagination-active-border-color: none;
+}
+
+.page-link{
+  color: #000;
+}

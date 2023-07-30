@@ -12,7 +12,7 @@ const BlogList = ({ posts, saveZone }) => {
   const location = useLocation();
   console.log(saveZone)
   return (
-    <Row style={{ marginTop: "100px"}}>
+    <Row>
       {posts && posts.map((post, i) => (
         <Col
           key={`item-${i}`}

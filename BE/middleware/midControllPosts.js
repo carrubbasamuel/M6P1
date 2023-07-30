@@ -11,10 +11,12 @@ const controllerPosts = (allPosts, req) => {
             };
         } else {
             const isSaved = post.howSave.includes(req.userId);
+            const isLike = post.likes.includes(req.userId);
             return {
                 ...post._doc,
                 isSaved,
                 isMine,
+                isLike,
             };
 
         }

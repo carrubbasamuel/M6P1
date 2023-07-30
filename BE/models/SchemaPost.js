@@ -28,7 +28,11 @@ const SchemaPost = new mongoose.Schema({
     howSave: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-    }]
+    }],
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
 },{ timestamps: true, strict: true });
 
 module.exports = mongoose.model('Post', SchemaPost, 'posts');
