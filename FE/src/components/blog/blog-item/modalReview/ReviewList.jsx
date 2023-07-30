@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Spinner } from "react-bootstrap";
 import { LuDelete } from "react-icons/lu";
 import { MdBuild } from "react-icons/md";
@@ -16,21 +16,17 @@ import Rate from "./Rate";
 
 
 
-export default function ReviewList({ postId }) {
+export default function ReviewList() {
   const dispatch = useDispatch();
   const { reviews, loading } = useSelector((state) => state.review);
 
   const handleEditMode = (review) => {
     dispatch(setReviewToEdit(review))
     dispatch(setRating(review.rate));
-    dispatch(setShowModal(false))
+    dispatch(setShowModal(null))
     dispatch(setShowModalEditMode(review._id));
   };
 
-
-  useEffect(() => {
-    dispatch(fetchGetReviews(postId));
-  }, [dispatch, postId]);
 
 
   return (
@@ -51,10 +47,10 @@ export default function ReviewList({ postId }) {
         </div>
       }
       <div className="p-3 reviewList">
-        {reviews.map((review) => (
+        {reviews?.map((review) => (
           <div key={review._id} className="d-flex justify-content-between reviews">
             <div className="d-flex flex-column">
-              <p>{review.comment}</p>
+              <p className="fs-4">{review.comment}</p>
               <div className="d-flex align-items-center justify-content-center h-50 w-50">
                 <Rate rate={review.rate} />
               </div>
@@ -68,7 +64,7 @@ export default function ReviewList({ postId }) {
               </div>
               <div className="d-flex">
                 {review.isMine === true && <MdBuild style={{ cursor: 'pointer', fontSize: '18px', marginRight: '10px' }} onClick={() => handleEditMode(review)} />}
-                {review.isMine === true && <LuDelete style={{ cursor: 'pointer', fontSize: '22px' }} onClick={() => dispatch(fetchDeleteReview(review._id)).then(() => dispatch(fetchGetReviews(postId)))} />}
+                {review.isMine === true && <LuDelete style={{ cursor: 'pointer', fontSize: '22px' }} onClick={() => dispatch(fetchDeleteReview(review._id)).then(() => dispatch(fetchGetReviews()))} />}
               </div>
 
             </div>

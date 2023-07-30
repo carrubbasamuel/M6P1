@@ -7,7 +7,7 @@ import "./header.css";
 
 export default function Header({name}) {
 
-    const lottieOptions = {
+    const lottieOptions = { 
         loop: true, // Se l'animazione deve riprodursi in loop o meno
         autoplay: true, // Se l'animazione deve partire automaticamente quando il componente si monta
         animationData: animation, // L'oggetto JSON dell'animazione
@@ -21,7 +21,7 @@ export default function Header({name}) {
             <Row>
             <Col className="d-flex flex-column align-items-center justify-content-center blog-main-title mb-3">
                     <Fade top duration={900}>
-                    <h1 className="display-1 text-end">Walcome on Strive Blog {name}!</h1>
+                    <h1 className="display-1 text-end">Walcome on Strive {name}!</h1>
                     <p className="fs-4 text-end"><span className="text-success">Explore our blog </span>A World of Discoveries and Inspiration!</p>
                     </Fade>
                 </Col>
@@ -30,7 +30,6 @@ export default function Header({name}) {
                     <Lottie options={lottieOptions} width={700} />
                 </Fade>
                 </Col>
-                
             </Row>
         </Container>
     )

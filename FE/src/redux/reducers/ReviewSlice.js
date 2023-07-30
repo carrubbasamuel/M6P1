@@ -19,10 +19,11 @@ export const fetchAddReview = createAsyncThunk(
 
 export const fetchGetReviews = createAsyncThunk(
     'review/fetchGetReviews',
-    async (postId, { getState }) => {
+    async (_, { getState }) => {
         const token = getState().login.userLogged.token;
+        const id = getState().review.postToReview;
         try {
-            const response = await axios.get(`http://localhost:3003/getReviews/${postId}`,{
+            const response = await axios.get(`http://localhost:3003/getReviews/${id}`,{
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
@@ -74,7 +75,8 @@ export const fetchEditReview = createAsyncThunk(
 
 const initialState = {
     reviews: [],
-    showModal: null,
+    showModal: false,
+    postToReview: null,
     showModalEditMode: null,
     reviewToEdit: null,
     rating: 0,
@@ -89,6 +91,9 @@ const reviewSlice = createSlice({
     reducers: {
         setShowModal(state, action) {
             state.showModal = action.payload;
+        },
+        setPostToReview(state, action) {
+            state.postToReview = action.payload;
         },
         setShowModalEditMode(state, action) {
             state.showModalEditMode = action.payload;
@@ -118,5 +123,5 @@ const reviewSlice = createSlice({
 
 
 
-export const { setShowModal, setReviewToEdit, setShowModalEditMode, setRating } = reviewSlice.actions;
+export const { setShowModal, setReviewToEdit, setShowModalEditMode, setRating, setPostToReview } = reviewSlice.actions;
 export default reviewSlice.reducer;

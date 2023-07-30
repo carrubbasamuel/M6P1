@@ -1,6 +1,6 @@
 import React from "react";
 import { Card } from "react-bootstrap";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineComment, AiOutlineHeart } from "react-icons/ai";
 import { BsBookmarkDashFill, BsBookmarkPlusFill } from "react-icons/bs";
 import { TiDocumentDelete } from 'react-icons/ti';
 import { useDispatch } from "react-redux";
@@ -10,15 +10,13 @@ import {
   fetchDeletePost,
   fetchLike,
   fetchMyPosts,
-  fetchSavedPosts,
   fetchSavePost,
+  fetchSavedPosts,
   fetchUnlike,
-  fetchUnsavePost
+  fetchUnsavePost,
 } from "../../../redux/reducers/PostSlice";
+import { fetchGetReviews, setPostToReview, setShowModal } from "../../../redux/reducers/ReviewSlice";
 import BlogAuthor from "../blog-author/BlogAuthor";
-
-import EditMode from "./modalReview/editmode";
-import ModalReview from "./modalReview/ModalReview";
 import "./styles.css";
 
 
@@ -26,6 +24,12 @@ const BlogItem = ({ posts }) => {
   const { title, cover, author, _id } = posts;
   const location = useLocation();
   const dispatch = useDispatch();
+
+  const handleShow = () => {
+    dispatch(setPostToReview(_id));
+    dispatch(setShowModal(true));
+    dispatch(fetchGetReviews());
+  };
 
   const handleSave = async () => {
     await dispatch(fetchSavePost(_id)).then(() => dispatch(fetchAuthors()));
@@ -75,21 +79,29 @@ const BlogItem = ({ posts }) => {
         <BlogAuthor {...author} />
         <div className="d-flex align-items-center justify-content-center fs-4">
 
-          
-          <EditMode />
-          <ModalReview postId={_id} />
-
-          {location.pathname === "/dashboard" && posts?.isMine === true && <TiDocumentDelete onClick={() => dispatch(fetchDeletePost(_id)).then(() => dispatch(fetchMyPosts()))} style={{ cursor: 'pointer' }} />}
-
-          {posts?.isMine === false ? 
-            <div className="d-flex align-items-center justify-content-center fs-4">
-          {posts?.isLike ? <AiFillHeart style={{ cursor: 'pointer' }} onClick={handleUnlike} /> : <AiOutlineHeart style={{ cursor: 'pointer' }} onClick={handleLike} />}
-          </div>
-          : 
-          null
+          {location.pathname === "/dashboard" && posts?.isMine === true &&
+            <div className="d-flex align-items-center">
+              <TiDocumentDelete onClick={() => dispatch(fetchDeletePost(_id)).then(() => dispatch(fetchMyPosts()))} style={{ cursor: 'pointer' }} />
+            </div>
           }
 
 
+          {posts?.isMine === false ?
+            <div className="d-flex align-items-center justify-content-center fs-4">
+              <p className="mb-0 me-2">{posts?.likes?.length}</p>
+              {posts?.isLike ? <AiFillHeart style={{ cursor: 'pointer' }} onClick={handleUnlike} /> : <AiOutlineHeart style={{ cursor: 'pointer' }} onClick={handleLike} />}
+
+            </div>
+            :
+            <div className="d-flex align-items-center justify-content-center fs-4">
+              <p className="mb-0 me-2">{posts?.likes?.length}</p>
+              <AiFillHeart style={{ cursor: 'pointer' }} />
+            </div>
+          }
+
+          <div className='d-flex align-items-center justify-content-center fs-4 ms-2'>
+            <AiOutlineComment onClick={handleShow} style={{ cursor: 'pointer' }} />
+          </div>
         </div>
 
       </Card.Footer>
