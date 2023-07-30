@@ -30,7 +30,7 @@ export default function ModalProfile(props) {
             consectetur ac, vestibulum at eros.
           </p>
         </div>
-        <Button variant='danger' onClick={() => dispatch(fetchDelete()).then(()=> navigate('/'))}>Delete Profile</Button>
+        <Button variant='danger' onClick={() => dispatch(fetchDelete()).then(()=> navigate('/login'))}>Delete Profile</Button>
       </Modal.Body>
       <Modal.Footer>
         <Button variant='outline-light' onClick={props.onHide}>Close</Button>

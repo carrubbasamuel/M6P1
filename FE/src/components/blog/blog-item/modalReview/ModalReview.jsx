@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { AiOutlineComment } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAddReview, fetchGetReviews, setRating, setShowModal } from '../../../redux/reducers/ReviewSlice';
+import { fetchAddReview, fetchGetReviews, setRating, setShowModal } from '../../../../redux/reducers/ReviewSlice';
 import Rate from './Rate';
 
 import ReviewList from './ReviewList';

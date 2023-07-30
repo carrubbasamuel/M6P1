@@ -10,15 +10,15 @@ import {
   fetchDeletePost,
   fetchLike,
   fetchMyPosts,
-  fetchSavePost,
   fetchSavedPosts,
+  fetchSavePost,
   fetchUnlike,
   fetchUnsavePost
 } from "../../../redux/reducers/PostSlice";
 import BlogAuthor from "../blog-author/BlogAuthor";
 
-import ModalReview from "./ModalReview";
-import EditMode from "./editmode";
+import EditMode from "./modalReview/editmode";
+import ModalReview from "./modalReview/ModalReview";
 import "./styles.css";
 
 

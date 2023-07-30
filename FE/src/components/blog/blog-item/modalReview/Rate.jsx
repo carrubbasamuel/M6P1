@@ -3,7 +3,7 @@ import React from 'react';
 import { RatingComponent } from 'react-rating-emoji';
 import 'react-rating-emoji/dist/index.css';
 import { useDispatch } from 'react-redux';
-import { setRating } from '../../../redux/reducers/ReviewSlice';
+import { setRating } from '../../../../redux/reducers/ReviewSlice';
 
 
 const Rate = ({rate, rating}) => {

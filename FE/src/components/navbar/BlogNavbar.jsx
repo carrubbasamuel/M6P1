@@ -22,7 +22,7 @@ const NavBar = props => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/");
+    navigate("/login");
   }
 
   return (

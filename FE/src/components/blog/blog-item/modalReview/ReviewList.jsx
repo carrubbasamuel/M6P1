@@ -11,7 +11,7 @@ import {
   setReviewToEdit,
   setShowModal,
   setShowModalEditMode
-} from "../../../redux/reducers/ReviewSlice";
+} from "../../../../redux/reducers/ReviewSlice";
 import Rate from "./Rate";
 
 

@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchEditReview, setRating, setShowModal, setShowModalEditMode } from '../../../redux/reducers/ReviewSlice';
+import { fetchEditReview, setRating, setShowModal, setShowModalEditMode } from '../../../../redux/reducers/ReviewSlice';
 import Rate from './Rate';
 
 export default function EditMode() {
