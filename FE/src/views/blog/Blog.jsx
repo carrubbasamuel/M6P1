@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Container, Image } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import BlogAuthor from "../../components/blog/blog-author/BlogAuthor";
-import BlogLike from "../../components/likes/BlogLike";
 
+
+import BlogLikeButton from "../../components/likes/BlogLike";
 import "./styles.css";
 
 
 const Blog = props => {
+  const dispatch = useDispatch();
   const [blog, setBlog] = useState({});
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const navigate = useNavigate();
   const posts = useSelector((state) => state.author.data);
-  console.log(posts);
 
 
   useEffect(() => {
@@ -27,7 +28,7 @@ const Blog = props => {
     } else {
       navigate("/404");
     }
-  }, []);
+  }, [params, posts, navigate]);
 
   
   if (loading) {
@@ -51,7 +52,7 @@ const Blog = props => {
                   marginTop: 20,
                 }}
               >
-                <BlogLike defaultLikes={["123"]} onChange={console.log} />
+                <BlogLikeButton posts={blog}  />
               </div>
             </div>
           </div>

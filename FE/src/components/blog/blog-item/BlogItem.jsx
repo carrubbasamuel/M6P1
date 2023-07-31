@@ -5,14 +5,13 @@ import { BsBookmarkDashFill, BsBookmarkPlusFill } from "react-icons/bs";
 import { TiDocumentDelete } from 'react-icons/ti';
 import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import BlogLikeButton from "../../likes/BlogLike";
 import {
   fetchAuthors,
   fetchDeletePost,
-  fetchLike,
   fetchMyPosts,
   fetchSavePost,
   fetchSavedPosts,
-  fetchUnlike,
   fetchUnsavePost,
 } from "../../../redux/reducers/PostSlice";
 import { fetchGetReviews, setPostToReview, setShowModal } from "../../../redux/reducers/ReviewSlice";
@@ -45,22 +44,6 @@ const BlogItem = ({ posts }) => {
     });
   };
 
-  const handleLike = () => {
-    dispatch(fetchLike(_id)).then(() => dispatch(fetchAuthors()));
-  };
-
-  const handleUnlike = () => {
-    dispatch(fetchUnlike(_id)).then(async () => {
-      if (location.pathname === '/dashboard') {
-        await dispatch(fetchSavedPosts());
-      } else if (location.pathname === '/') {
-        dispatch(fetchAuthors());
-      }
-    });
-  };
-
-
-
   return (
     <Card className="blog-card shadow">
       {posts?.isMine === false ?
@@ -88,14 +71,13 @@ const BlogItem = ({ posts }) => {
 
           {posts?.isMine === false ?
             <div className="d-flex align-items-center justify-content-center fs-4">
-              <p className="mb-0 me-2">{posts?.likes?.length}</p>
-              {posts?.isLike ? <AiFillHeart style={{ cursor: 'pointer' }} onClick={handleUnlike} /> : <AiOutlineHeart style={{ cursor: 'pointer' }} onClick={handleLike} />}
+              <BlogLikeButton posts={posts} />
 
             </div>
             :
             <div className="d-flex align-items-center justify-content-center fs-4">
               <p className="mb-0 me-2">{posts?.likes?.length}</p>
-              <AiFillHeart style={{ cursor: 'pointer' }} />
+              <AiFillHeart />
             </div>
           }
 
