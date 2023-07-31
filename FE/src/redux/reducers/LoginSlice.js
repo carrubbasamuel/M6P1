@@ -71,6 +71,7 @@ export const fetchDelete = createAsyncThunk(
     }
 )
 
+
 //*PATCH to update the avatar user
 export const fetchUpdateAvatar = createAsyncThunk(
     'login/fetchUpdateAvatar',
@@ -86,7 +87,6 @@ export const fetchUpdateAvatar = createAsyncThunk(
                 }
             });
             const { data } = response;
-            console.log(data);
             return data;
         }
         catch (error) {
@@ -103,7 +103,6 @@ export const fetchUpdateAvatar = createAsyncThunk(
 const initialState = {
     userLogged: JSON.parse(localStorage.getItem('user')) || null,
     codeRegister: null,
-    isDeleteble: false,
     loading: false,
     error: null
 }

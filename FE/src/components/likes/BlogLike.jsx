@@ -12,7 +12,7 @@ export default function BlogLikeButton({ posts }) {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  
+
   const handleLike = () => {
     dispatch(fetchLike(_id)).then(() => dispatch(fetchAuthors()));
   };
@@ -27,13 +27,25 @@ export default function BlogLikeButton({ posts }) {
     });
   };
 
-  return posts?.isLike ?
-    <div className="d-flex align-items-center justify-content-center fs-4 ms-2">
-      <p className="mb-0 me-2">{posts?.likes?.length}</p>
-      <AiFillHeart style={{ cursor: 'pointer' }} onClick={handleUnlike} />
-    </div>
-    : <div className="d-flex align-items-center justify-content-center fs-4 ms-2">
-      <p className="mb-0 me-2">{posts?.likes?.length}</p>
-      <AiOutlineHeart style={{ cursor: 'pointer' }} onClick={handleLike} />
-    </div>
+  return (
+    posts?.isMine === false ?
+      <div className="d-flex align-items-center justify-content-center fs-4">
+        {posts?.isLike ?
+        <div className="d-flex align-items-center justify-content-center fs-4 ms-2">
+          <p className="mb-0 me-2">{posts?.likes?.length}</p>
+          <AiFillHeart style={{ cursor: 'pointer' }} onClick={handleUnlike} />
+        </div>
+        : <div className="d-flex align-items-center justify-content-center fs-4 ms-2">
+          <p className="mb-0 me-2">{posts?.likes?.length}</p>
+          <AiOutlineHeart style={{ cursor: 'pointer' }} onClick={handleLike} />
+        </div>}
+      </div>
+      :
+      <div className="d-flex align-items-center justify-content-center fs-4">
+        <p className="mb-0 me-2">{posts?.likes?.length}</p>
+        <AiFillHeart />
+      </div>
+  )
+
+
 }

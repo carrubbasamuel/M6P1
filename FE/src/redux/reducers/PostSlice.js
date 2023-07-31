@@ -17,7 +17,6 @@ export const fetchAuthors = createAsyncThunk(
                 },
             });
             const { data } = response; 
-            console.log(data);
             return data;
         } catch (error) {
             if (error.response.status === 401) dispatch(logout());
@@ -160,7 +159,6 @@ export const fetchSavedPosts = createAsyncThunk(
                 },
             });
             const { data } = response;
-            console.log(data);
             return data;
         } catch (error) {
             console.log(error);

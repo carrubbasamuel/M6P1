@@ -41,17 +41,7 @@ const BlogItem = ({ posts }) => {
         <div className="d-flex align-items-center justify-content-center fs-4">
 
           {/* Like button */}
-          {posts?.isMine === false ?
-            <div className="d-flex align-items-center justify-content-center fs-4">
-              <BlogLikeButton posts={posts} />
-
-            </div>
-            :
-            <div className="d-flex align-items-center justify-content-center fs-4">
-              <p className="mb-0 me-2">{posts?.likes?.length}</p>
-              <AiFillHeart />
-            </div>
-          }
+          <BlogLikeButton posts={posts} />
           
           {/* Comment button */}
           <div className='d-flex align-items-center justify-content-center fs-4 ms-2'>
