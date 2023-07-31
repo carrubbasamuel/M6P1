@@ -1,20 +1,16 @@
 import React from "react";
 import { Card } from "react-bootstrap";
-import { AiFillHeart, AiOutlineComment, AiOutlineHeart } from "react-icons/ai";
-import { BsBookmarkDashFill, BsBookmarkPlusFill } from "react-icons/bs";
+import { AiFillHeart, AiOutlineComment } from "react-icons/ai";
 import { TiDocumentDelete } from 'react-icons/ti';
 import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import BlogLikeButton from "../../likes/BlogLike";
 import {
-  fetchAuthors,
   fetchDeletePost,
   fetchMyPosts,
-  fetchSavePost,
-  fetchSavedPosts,
-  fetchUnsavePost,
 } from "../../../redux/reducers/PostSlice";
 import { fetchGetReviews, setPostToReview, setShowModal } from "../../../redux/reducers/ReviewSlice";
+import BlogSaveButton from "../../blog-save/blogsave";
+import BlogLikeButton from "../../likes/BlogLike";
 import BlogAuthor from "../blog-author/BlogAuthor";
 import "./styles.css";
 
@@ -30,30 +26,12 @@ const BlogItem = ({ posts }) => {
     dispatch(fetchGetReviews());
   };
 
-  const handleSave = async () => {
-    await dispatch(fetchSavePost(_id)).then(() => dispatch(fetchAuthors()));
-  };
-
-  const handleUnsave = () => {
-    dispatch(fetchUnsavePost(_id)).then(async () => {
-      if (location.pathname === '/dashboard') {
-        await dispatch(fetchSavedPosts());
-      } else if (location.pathname === '/') {
-        dispatch(fetchAuthors());
-      }
-    });
-  };
+  
 
   return (
     <Card className="blog-card shadow">
-      {posts?.isMine === false ?
-        <div className="position-absolute mark">
-          {posts?.isSaved ? <BsBookmarkDashFill style={{ cursor: 'pointer', fill: 'black' }} onClick={handleUnsave} /> : <BsBookmarkPlusFill style={{ cursor: 'pointer' }} onClick={handleSave} />}
-        </div>
-        :
-        null
-      }
-
+      {/* Save button */}
+      <BlogSaveButton posts={posts}/>
       <Card.Img variant="top" src={cover} className="blog-cover" />
       <Card.Body as={Link} to={`/blog/${_id}`}>
         <Card.Title>{title}</Card.Title>
@@ -62,13 +40,7 @@ const BlogItem = ({ posts }) => {
         <BlogAuthor {...author} />
         <div className="d-flex align-items-center justify-content-center fs-4">
 
-          {location.pathname === "/dashboard" && posts?.isMine === true &&
-            <div className="d-flex align-items-center">
-              <TiDocumentDelete onClick={() => dispatch(fetchDeletePost(_id)).then(() => dispatch(fetchMyPosts()))} style={{ cursor: 'pointer' }} />
-            </div>
-          }
-
-
+          {/* Like button */}
           {posts?.isMine === false ?
             <div className="d-flex align-items-center justify-content-center fs-4">
               <BlogLikeButton posts={posts} />
@@ -80,10 +52,18 @@ const BlogItem = ({ posts }) => {
               <AiFillHeart />
             </div>
           }
-
+          
+          {/* Comment button */}
           <div className='d-flex align-items-center justify-content-center fs-4 ms-2'>
             <AiOutlineComment onClick={handleShow} style={{ cursor: 'pointer' }} />
           </div>
+
+          {/* Delate button */}
+          {location.pathname === "/dashboard" && posts?.isMine === true &&
+            <div className="d-flex align-items-center">
+              <TiDocumentDelete onClick={() => dispatch(fetchDeletePost(_id)).then(() => dispatch(fetchMyPosts()))} style={{ cursor: 'pointer' }} />
+            </div>
+          }
         </div>
 
       </Card.Footer>

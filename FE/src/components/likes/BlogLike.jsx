@@ -11,6 +11,8 @@ export default function BlogLikeButton({ posts }) {
   const { _id } = posts;
   const dispatch = useDispatch();
   const location = useLocation();
+
+  
   const handleLike = () => {
     dispatch(fetchLike(_id)).then(() => dispatch(fetchAuthors()));
   };
