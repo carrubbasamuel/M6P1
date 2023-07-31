@@ -16,8 +16,7 @@ const validationNewUser = [
     body('name').isString().withMessage('Name must be a string'),
     body('surname').isString().withMessage('Surname must be a string'),
     body('born_date').isString().withMessage('Born_date must be a string'),
-    body('avatar').isURL().withMessage('Avatar must be a valid URL'),
-];
+]
 
 
 

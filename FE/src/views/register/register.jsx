@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchRegister } from "../../redux/reducers/LoginSlice";
+import { fetchRegister, fetchLogin } from "../../redux/reducers/LoginSlice";
 import "./register.css";
 
 export default function Register() {
@@ -14,22 +14,21 @@ export default function Register() {
     const name = useRef(null);
     const surname = useRef(null);
     const born_date = useRef(null);
-    const avatar = useRef(null);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(avatar.current.value === "") avatar.current.value = "https://static.vecteezy.com/system/resources/thumbnails/001/840/618/small/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg"
         const formData = {
             email: mail.current.value,
             password: password.current.value,
             name: name.current.value,
             surname: surname.current.value,
             born_date: born_date.current.value,
-            avatar: avatar.current.value
         }
         
-        dispatch(fetchRegister(formData));
-        navigate("/")
+        dispatch(fetchRegister(formData))
+        .then(() => dispatch(fetchLogin({ email: formData.email, password: formData.password})))
+        .then(()=>navigate("/"));
+    
     }
 
     return (
@@ -54,10 +53,6 @@ export default function Register() {
           <Form.Group controlId="formBornDate">
             <Form.Label>Born Date</Form.Label>
             <Form.Control ref={born_date} name="born_date" type="date" placeholder="Born Date" />
-          </Form.Group>
-          <Form.Group controlId="formAvatar">
-            <Form.Label>Avatar</Form.Label>
-            <Form.Control ref={avatar} name="avatar" type="input" placeholder="http://img...." />
           </Form.Group>
           <Button type="submit" variant="outline-success">
             Submit
