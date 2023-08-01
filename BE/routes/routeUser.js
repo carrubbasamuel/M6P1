@@ -99,6 +99,8 @@ router.delete('/delete', verifyToken, async (req, res) => {
 
     const delateReview = await SchemaReview.deleteMany({ authorId: userId });
     const deletedPosts = await SchemaPost.deleteMany({ author: userId });
+    const deleteLike = await SchemaPost.updateMany({ likes: userId }, { $pull: { likes: userId } });
+    const deleteSave = await SchemaPost.updateMany({ saved: userId }, { $pull: { saved: userId } });
     const deletedUser = await SchemaUser.findByIdAndDelete(userId);
 
     if (!deletedUser) {
@@ -109,7 +111,11 @@ router.delete('/delete', verifyToken, async (req, res) => {
 
     res.status(201).json({
       message: 'User and related posts deleted successfully',
-      data: { deletedUser, deletedPosts, delateReview },
+      data: { deletedUser,
+         deletedPosts,
+          delateReview,
+          deleteLike,
+          deleteSave },
     });
   } catch (error) {
     res.status(500).json({
