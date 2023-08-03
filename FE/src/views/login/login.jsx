@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { FaFacebook } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
 import { MdDangerous } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { fetchLogin, setCodeRegister } from '../../redux/reducers/LoginSlice';
+
+
 import './login.css';
 
 export default function Login() {
@@ -70,6 +74,8 @@ export default function Login() {
                 </Button>
                 <Link className='text-muted' to="/register">SingUp</Link>
               </Form>
+              <button onClick={() => window.location.href = 'http://localhost:3003/auth/google'} className='googlebutton'><FcGoogle className='me-3' /> Login with Google</button>
+              <button onClick={() => window.location.href = 'http://localhost:3003/auth/facebook'} className='googlebutton'><FaFacebook className='me-3' /> Login with Facebook</button>
             </div>
           </Col>
         </Row>

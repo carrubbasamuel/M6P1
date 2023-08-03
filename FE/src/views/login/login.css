@@ -33,6 +33,16 @@
     animation: ombra 0.5s ease-in-out;
   }
 
+  .googlebutton{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 15px;
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+  }
+
   @keyframes ombra {
     0% {
      transform: translateX(-10px);

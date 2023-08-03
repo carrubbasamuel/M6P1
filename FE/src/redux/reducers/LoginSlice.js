@@ -99,7 +99,6 @@ export const fetchUpdateAvatar = createAsyncThunk(
 
 
 
-
 const initialState = {
     userLogged: JSON.parse(localStorage.getItem('user')) || null,
     codeRegister: null,
@@ -118,6 +117,10 @@ const loginSlice = createSlice({
         },
         setCodeRegister: (state, action) => {
             state.codeRegister = action.payload;
+        },
+        setUserLogged: (state, action) => {
+            localStorage.setItem('user', JSON.stringify(action.payload));
+            state.userLogged = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -172,5 +175,5 @@ const loginSlice = createSlice({
 })
 
 
-export const { logout, setCodeRegister } = loginSlice.actions;
+export const { logout, setCodeRegister, setUserLogged } = loginSlice.actions;
 export default loginSlice.reducer;

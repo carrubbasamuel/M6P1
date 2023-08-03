@@ -9,6 +9,7 @@ import Home from "./views/home/Home";
 import Login from "./views/login/login";
 import NewBlogPost from "./views/new/New";
 import Register from "./views/register/register";
+import SuccessLog from "./views/successLog/successLog";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/success" element={<SuccessLog />} />
         {/* Rotte Protette */}
         <Route path="/" element={<ProtectedRoute element={<Home />} />} />
         <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />

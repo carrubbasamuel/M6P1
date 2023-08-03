@@ -4,8 +4,6 @@ const cors = require("cors");
 
 
 
-
-
 require("dotenv").config();
 
 const app = express();
@@ -32,8 +30,13 @@ const Post = require("./routes/routePost.js");
 const User = require("./routes/routeUser.js");
 const Resource = require("./routes/routeResources.js");
 const Review = require("./routes/routeReview.js");
+const google = require("./OAuth/oAuthGoogle.js");
+const facebook = require("./OAuth/oAuthFacebook.js");
 
-// routes
+
+//routes
+app.use("/", google);// google login
+app.use("/", facebook);// facebook login
 app.use("/", User);
 app.use("/", Resource);
 app.use("/", verifyToken, Review);
