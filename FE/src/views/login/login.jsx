@@ -48,7 +48,7 @@ export default function Login() {
     } catch (error) {
       console.log(error);
     }
-    
+
   };
 
   return (
@@ -58,24 +58,35 @@ export default function Login() {
           <Col md={6}>
             <div className="login-form">
               <img className='mb-5' width={150} src={logo} alt="" />
-              <Form onSubmit={handleSubmit} >
-                {codeRegister?.statusCode === 409 && <Alert variant="danger" className='alertlogin'><MdDangerous  className='me-2'/>    You have al ready an account whit this email!</Alert>}
-                {notexist && <Alert variant="danger" className='alertlogin'><MdDangerous  className='me-2' />      Email or Password not correct</Alert>}
-                <Form.Group controlId="formBasicEmail">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control ref={mail} type="email" placeholder="Enter email" />
-                </Form.Group>
-                <Form.Group controlId="formBasicPassword">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control ref={password} type="password" placeholder="Enter password" />
-                </Form.Group>
-                <Button className='m-4' variant="outline-success" type="submit">
-                  Login
-                </Button>
-                <Link className='text-muted' to="/register">SingUp</Link>
-              </Form>
-              <button onClick={() => window.location.href = 'http://localhost:3003/auth/google'} className='googlebutton'><FcGoogle className='me-3' /> Login with Google</button>
-              <button onClick={() => window.location.href = 'http://localhost:3003/auth/facebook'} className='googlebutton'><FaFacebook className='me-3' /> Login with Facebook</button>
+              <Row className='align-items-center'>
+                <Col>
+                  <Form onSubmit={handleSubmit} >
+                    {codeRegister?.statusCode === 409 && <Alert variant="danger" className='alertlogin'><MdDangerous className='me-2' />    You have al ready an account whit this email!</Alert>}
+                    {notexist && <Alert variant="danger" className='alertlogin'><MdDangerous className='me-2' />      Email or Password not correct</Alert>}
+                    <Form.Group controlId="formBasicEmail">
+                      <Form.Label>Email</Form.Label>
+                      <Form.Control ref={mail} type="email" placeholder="Enter email" />
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                      <Form.Label>Password</Form.Label>
+                      <Form.Control ref={password} type="password" placeholder="Enter password" />
+                    </Form.Group>
+                    <Button className='m-4' variant="outline-success" type="submit">
+                      Login
+                    </Button>
+                    <Link className='text-muted' to="/register">SingUp</Link>
+                  </Form>
+                </Col>
+                
+                  <h5 className='text-center'>OR</h5>
+                <Col>
+                  <button onClick={() => window.location.href = 'http://localhost:3003/auth/google'} className='googlebutton'><FcGoogle className='me-3 fs-3' /> SingIn with Google</button>
+                  <button onClick={() => window.location.href = 'http://localhost:3003/auth/facebook'} className='facebookbutton'><FaFacebook className='me-3 fs-3' /> SingIn with Facebook</button>
+                </Col>
+              </Row>
+
+
+
             </div>
           </Col>
         </Row>

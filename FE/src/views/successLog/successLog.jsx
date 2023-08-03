@@ -1,6 +1,7 @@
 import jwt_decode from "jwt-decode";
 import query from "query-string";
 import React, { useEffect } from "react";
+import { Spinner } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUserLogged } from "../../redux/reducers/LoginSlice";
@@ -24,15 +25,14 @@ export default function SuccessLog() {
     dispatch(setUserLogged(userLogged));
 
     useEffect(() => {
-        setTimeout(() => {
-            navigate('/');
-        }, 3000);
-    }, []);
+        navigate('/');
+    }, [navigate]);
+    
 
     
     return (
         <div>
-        <h1>SuccessLog</h1>
+          <Spinner animation="border" variant="success" />
         </div>
     );
 }

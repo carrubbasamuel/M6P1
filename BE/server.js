@@ -23,20 +23,24 @@ const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connessione al DB avvenuta con successo!"));
 
+//OAuth
+const google = require("./OAuth/oAuthGoogle.js");
+const facebook = require("./OAuth/oAuthFacebook.js");
+const github = require("./OAuth/oAuthGitHub.js");
+
+app.use("/", google);// google login
+app.use("/", facebook);// facebook login
+app.use("/", github);// github login
 
 
-// import delle routes
+
+//routes
 const Post = require("./routes/routePost.js");
 const User = require("./routes/routeUser.js");
 const Resource = require("./routes/routeResources.js");
 const Review = require("./routes/routeReview.js");
-const google = require("./OAuth/oAuthGoogle.js");
-const facebook = require("./OAuth/oAuthFacebook.js");
 
 
-//routes
-app.use("/", google);// google login
-app.use("/", facebook);// facebook login
 app.use("/", User);
 app.use("/", Resource);
 app.use("/", verifyToken, Review);

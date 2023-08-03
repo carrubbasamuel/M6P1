@@ -35,12 +35,49 @@
 
   .googlebutton{
     background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.126);
     border: 1px solid #ccc;
     border-radius: 20px;
     padding: 15px;
     margin-top: 20px;
     width: 100%;
     text-align: center;
+  }
+
+  .googlebutton:hover{
+    background-color: #ccc;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 15px;
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .facebookbutton{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.126);
+    background-color: #3b5998;
+    border: 1px solid #3b5998;
+    border-radius: 20px;
+    padding: 15px;
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+  } 
+  hr{
+width: 100%;
+  }
+  
+  .facebookbutton:hover{
+    background-color: #fff;
+    border: 1px solid #3b5998;
+    border-radius: 20px;
+    padding: 15px;
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+    color: #3b5998;
   }
 
   @keyframes ombra {
